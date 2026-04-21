@@ -4,7 +4,7 @@
 
 // Smooth reveal on scroll
 const revealTargets = document.querySelectorAll(
-  '.work-card, .pillar-card, .news-item, .sns-card, .section-head, .about-text'
+  '.work-card, .pillar-card, .member-card, .members-note-panel, .news-item, .sns-card, .section-head, .about-text'
 );
 revealTargets.forEach(el => el.classList.add('reveal'));
 
