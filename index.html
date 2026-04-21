@@ -1611,23 +1611,78 @@ ul, ol { list-style: none; }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Section head wipe */
-.section-head { position: relative; overflow: hidden; }
+/* Section head — B(line sweep) + E(glitch flicker) */
+.section-head { position: relative; }
+/* Sweep line (B) */
 .section-head.reveal::before {
   content: "";
-  position: absolute; inset: 0;
+  position: absolute;
+  top: 50%; left: -10%;
+  width: 120%; height: 2px;
   background: var(--yellow);
-  transform: translateX(-105%) skewX(-12deg);
+  box-shadow: 0 0 10px rgba(201,176,55,0.6);
+  opacity: 0;
+  transform: rotate(-6deg) translateX(-120%);
   z-index: 2;
   pointer-events: none;
 }
 .section-head.reveal.visible::before {
-  animation: headWipe 0.9s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+  animation: headLineSweep 0.75s cubic-bezier(0.77, 0, 0.18, 1) forwards;
 }
-@keyframes headWipe {
-  0%   { transform: translateX(-105%) skewX(-12deg); }
-  45%  { transform: translateX(0) skewX(-12deg); }
-  100% { transform: translateX(110%) skewX(-12deg); }
+@keyframes headLineSweep {
+  0%   { opacity: 0; transform: rotate(-6deg) translateX(-120%); }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: rotate(-6deg) translateX(120%); }
+}
+/* Residual stub (B) — small line left as accent */
+.section-head.reveal::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: -40px;
+  width: 36px; height: 2px;
+  background: var(--yellow);
+  box-shadow: 0 0 8px rgba(201,176,55,0.5);
+  opacity: 0;
+  transform: rotate(-6deg);
+  pointer-events: none;
+  z-index: 1;
+}
+.section-head.reveal.visible::after {
+  animation: headLineRest 0.4s 0.75s forwards;
+}
+@keyframes headLineRest {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+/* Glitch flicker on title (E) — triggers after sweep */
+.section-head.reveal .section-no,
+.section-head.reveal .section-title .jp,
+.section-head.reveal .section-title .en {
+  opacity: 0;
+}
+.section-head.reveal.visible .section-no {
+  animation: headFadeSmall 0.4s 0.8s forwards;
+}
+.section-head.reveal.visible .section-title .jp {
+  animation: headGlitch 0.7s 0.9s steps(10, end) forwards;
+}
+.section-head.reveal.visible .section-title .en {
+  animation: headGlitch 0.7s 1.05s steps(10, end) forwards;
+}
+@keyframes headFadeSmall {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes headGlitch {
+  0%   { opacity: 0; transform: translate(0,0); filter: none; }
+  10%  { opacity: 1; transform: translate(-5px, 2px); filter: drop-shadow(3px 0 0 #ff2d4d) drop-shadow(-3px 0 0 #2de0ff); }
+  20%  { opacity: 0.2; transform: translate(4px, -2px); filter: none; }
+  30%  { opacity: 1; transform: translate(-3px, 1px); filter: drop-shadow(2px 0 0 var(--red-glow)) drop-shadow(-2px 0 0 var(--yellow)); }
+  45%  { opacity: 0.4; transform: translate(2px, 0); filter: none; }
+  60%  { opacity: 1; transform: translate(-1px, 0); filter: drop-shadow(1px 0 0 var(--yellow)); }
+  80%  { opacity: 1; transform: translate(0.5px, 0); filter: none; }
+  100% { opacity: 1; transform: translate(0,0); filter: none; }
 }
 
 /* Work card hover */
