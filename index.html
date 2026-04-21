@@ -1742,6 +1742,67 @@ ul, ol { list-style: none; }
   }
   .loader { display: none !important; }
 }
+
+/* ============================================
+   CUSTOM CURSOR (⑤ blend difference + ⑥ diamond→square)
+   ============================================ */
+@media (hover: hover) and (pointer: fine) {
+  html.has-cursor, html.has-cursor body { cursor: none; }
+  html.has-cursor a,
+  html.has-cursor button,
+  html.has-cursor input,
+  html.has-cursor textarea,
+  html.has-cursor select,
+  html.has-cursor [role="button"] { cursor: none; }
+}
+.cursor-blend,
+.cursor-diamond {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.25s, width 0.3s cubic-bezier(0.2,0.9,0.2,1),
+              height 0.3s cubic-bezier(0.2,0.9,0.2,1),
+              background 0.25s, border-radius 0.3s, border-color 0.25s;
+  will-change: transform, width, height;
+}
+html.has-cursor .cursor-blend,
+html.has-cursor .cursor-diamond { opacity: 1; }
+
+.cursor-blend {
+  width: 70px; height: 70px;
+  background: var(--off-white);
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  transform: translate(-50%, -50%);
+}
+.cursor-diamond {
+  width: 22px; height: 22px;
+  border: 2px solid var(--yellow);
+  box-shadow: 0 0 8px rgba(201, 176, 55, 0.4);
+  background: transparent;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+html.cursor-hover .cursor-blend {
+  width: 130px; height: 130px;
+}
+html.cursor-hover .cursor-diamond {
+  width: 70px; height: 70px;
+  background: rgba(201, 176, 55, 0.28);
+  border-radius: 8px;
+  border-color: var(--yellow);
+}
+html.cursor-down .cursor-diamond {
+  width: 16px; height: 16px;
+  background: var(--yellow);
+}
+html.cursor-down .cursor-blend {
+  width: 50px; height: 50px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cursor-blend, .cursor-diamond { display: none; }
+}
 </style>
 </head>
 <body>
@@ -1760,6 +1821,10 @@ ul, ol { list-style: none; }
 
 <!-- SCROLL PROGRESS -->
 <div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor-blend" id="cursorBlend"></div>
+<div class="cursor-diamond" id="cursorDiamond"></div>
 
 <!-- NOISE OVERLAY -->
 <div class="noise"></div>
@@ -2323,6 +2388,61 @@ window.addEventListener('load', () => {
     loader.style.display = 'none';
   }, 2600);
 });
+
+// ============================================
+// CUSTOM CURSOR (⑤ blend + ⑥ diamond)
+// ============================================
+(function customCursor() {
+  // Only on devices that have fine pointer (mouse)
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  const blend = document.getElementById('cursorBlend');
+  const diamond = document.getElementById('cursorDiamond');
+  if (!blend || !diamond) return;
+
+  document.documentElement.classList.add('has-cursor');
+
+  let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  let bx = mx, by = my; // blend follows with lag
+  let dx = mx, dy = my; // diamond tracks tightly but smooth
+
+  window.addEventListener('mousemove', (e) => {
+    mx = e.clientX; my = e.clientY;
+  });
+
+  window.addEventListener('mousedown', () => document.documentElement.classList.add('cursor-down'));
+  window.addEventListener('mouseup',   () => document.documentElement.classList.remove('cursor-down'));
+
+  // Hover state for interactive elements
+  const hoverSelector = 'a, button, .work-card, .member-card, .theme-card, .nav-logo, [role="button"], input[type="submit"]';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(hoverSelector)) {
+      document.documentElement.classList.add('cursor-hover');
+    }
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(hoverSelector) && !e.relatedTarget?.closest(hoverSelector)) {
+      document.documentElement.classList.remove('cursor-hover');
+    }
+  });
+
+  function tick() {
+    // diamond: fast ease (0.3)
+    dx += (mx - dx) * 0.35;
+    dy += (my - dy) * 0.35;
+    // blend: slow ease (0.15)
+    bx += (mx - bx) * 0.16;
+    by += (my - by) * 0.16;
+
+    diamond.style.transform = `translate(${dx}px, ${dy}px) translate(-50%, -50%) rotate(${document.documentElement.classList.contains('cursor-hover') ? 0 : 45}deg)`;
+    blend.style.transform = `translate(${bx}px, ${by}px) translate(-50%, -50%)`;
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  // Hide when mouse leaves window
+  document.addEventListener('mouseleave', () => document.documentElement.classList.remove('has-cursor'));
+  document.addEventListener('mouseenter', () => document.documentElement.classList.add('has-cursor'));
+})();
 
 // ============================================
 // SCROLL PROGRESS BAR
