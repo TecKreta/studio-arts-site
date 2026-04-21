@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cursor Animation Preview — STUDIO ARTS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@500;700&family=Shippori+Mincho+B1:wght@700;800&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #2D1B3D;
+  --red-glow: #4A2D66;
+  --black: #0D0B10;
+  --black-soft: #171320;
+  --off-white: #E5DBC9;
+  --yellow: #C9B037;
+  --cyan: #2de0ff;
+  --pink: #ff2d6a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--black);
+  color: var(--off-white);
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  padding: 48px 24px 80px;
+  min-height: 100vh;
+}
+.page-head {
+  max-width: 1200px;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+.page-head h1 {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(36px, 5vw, 60px);
+  letter-spacing: 0.04em;
+  color: var(--yellow);
+}
+.page-head p {
+  margin-top: 8px;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: rgba(229,219,201,0.6);
+}
+.grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+}
+.card {
+  background: var(--black-soft);
+  border: 1px solid rgba(201,176,55,0.2);
+  overflow: hidden;
+}
+.card-head {
+  padding: 12px 18px;
+  background: rgba(45,27,61,0.4);
+  border-bottom: 1px solid rgba(201,176,55,0.15);
+}
+.card-head h2 {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.2em;
+  color: var(--yellow);
+}
+.card-head .desc {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(229,219,201,0.6);
+}
+.stage {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(74,45,102,0.25), transparent 60%),
+    var(--black);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 14px;
+  cursor: none;
+}
+.stage .sample-btn {
+  padding: 10px 24px;
+  background: var(--yellow);
+  color: var(--black);
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  font-size: 13px;
+  border: none;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+.stage .sample-link {
+  color: var(--yellow);
+  font-family: "Oswald", sans-serif;
+  letter-spacing: 0.15em;
+  font-size: 12px;
+  text-decoration: underline;
+}
+.stage .hint {
+  font-size: 11px;
+  color: rgba(229,219,201,0.4);
+  letter-spacing: 0.15em;
+  margin-top: 4px;
+}
+
+/* Custom cursor elements — hidden until hover */
+.c-dot, .c-ring, .c-crosshair, .c-glow, .c-square, .c-blend {
+  position: absolute;
+  pointer-events: none;
+  top: 0; left: 0;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.15s cubic-bezier(0.2,0.9,0.2,1), width 0.2s, height 0.2s, background 0.2s;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+}
+.stage.active .c-dot, .stage.active .c-ring, .stage.active .c-crosshair,
+.stage.active .c-glow, .stage.active .c-square, .stage.active .c-blend { opacity: 1; }
+
+/* =========================================================
+   ① DOT + RING (classic)
+========================================================= */
+.stage-1 .c-dot {
+  width: 8px; height: 8px;
+  background: var(--yellow);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--yellow);
+}
+.stage-1 .c-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--yellow);
+  border-radius: 50%;
+  transition: opacity 0.2s, width 0.25s, height 0.25s, background 0.25s;
+}
+.stage-1.hover-btn .c-ring {
+  width: 80px; height: 80px;
+  background: rgba(201,176,55,0.2);
+  border-color: var(--yellow);
+}
+
+/* =========================================================
+   ② CROSSHAIR (P5)
+========================================================= */
+.stage-2 .c-crosshair {
+  width: 50px; height: 50px;
+}
+.stage-2 .c-crosshair::before,
+.stage-2 .c-crosshair::after {
+  content: "";
+  position: absolute;
+  background: var(--yellow);
+  box-shadow: 0 0 6px var(--yellow);
+}
+.stage-2 .c-crosshair::before {
+  top: 50%; left: 0; width: 100%; height: 1px; transform: translateY(-50%);
+}
+.stage-2 .c-crosshair::after {
+  left: 50%; top: 0; height: 100%; width: 1px; transform: translateX(-50%);
+}
+.stage-2 .c-dot {
+  width: 6px; height: 6px;
+  background: var(--yellow);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--yellow);
+}
+
+/* =========================================================
+   ③ GLOW AURA
+========================================================= */
+.stage-3 .c-glow {
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, rgba(201,176,55,0.35) 0%, rgba(201,176,55,0.1) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(4px);
+}
+.stage-3 .c-dot {
+  width: 6px; height: 6px;
+  background: var(--yellow);
+  border-radius: 50%;
+}
+
+/* =========================================================
+   ④ PARTICLE TRAIL
+========================================================= */
+.stage-4 { /* uses JS canvas */ }
+
+/* =========================================================
+   ⑤ BLEND DIFFERENCE
+========================================================= */
+.stage-5 .c-blend {
+  width: 80px; height: 80px;
+  background: var(--off-white);
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  transition: opacity 0.2s, width 0.25s, height 0.25s;
+}
+.stage-5.hover-btn .c-blend { width: 140px; height: 140px; }
+
+/* =========================================================
+   ⑥ MAGNETIC SQUARE
+========================================================= */
+.stage-6 .c-square {
+  width: 22px; height: 22px;
+  border: 2px solid var(--yellow);
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition: opacity 0.2s, width 0.25s, height 0.25s, background 0.25s, border-radius 0.25s;
+}
+.stage-6.hover-btn .c-square {
+  width: 70px; height: 70px;
+  background: rgba(201,176,55,0.25);
+  border-radius: 6px;
+}
+
+/* =========================================================
+   ⑦ COMET (tail)
+========================================================= */
+/* implemented via JS */
+
+/* =========================================================
+   ⑧ DUAL COLOR (RGB split P5)
+========================================================= */
+.stage-8 .c-dot {
+  width: 10px; height: 10px;
+  background: var(--off-white);
+  border-radius: 50%;
+  box-shadow:
+    4px 0 0 var(--pink),
+   -4px 0 0 var(--cyan);
+}
+.stage-8 .c-ring {
+  width: 40px; height: 40px;
+  border: 1.5px dashed var(--yellow);
+  border-radius: 50%;
+  animation: spin 4s linear infinite;
+}
+@keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+.stage canvas {
+  position: absolute; inset: 0; pointer-events: none;
+}
+
+.foot {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 20px;
+  border: 1px dashed rgba(201,176,55,0.3);
+  text-align: center;
+  font-size: 13px;
+  color: rgba(229,219,201,0.7);
+  line-height: 1.8;
+}
+.foot strong { color: var(--yellow); }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>CURSOR ANIMATION PREVIEW</h1>
+  <p>各カードにマウスを入れてみてください。好みの番号を教えてください。</p>
+</div>
+
+<div class="grid">
+
+  <!-- 1 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>① ドット+リング（定番コンボ）</h2>
+      <span class="desc">小さな金ドットが正確に追従＋輪郭リングが遅れて追従。ボタンで拡大</span>
+    </div>
+    <div class="stage stage-1" data-stage="1">
+      <div class="c-ring"></div>
+      <div class="c-dot"></div>
+      <button class="sample-btn">HOVER ME</button>
+      <span class="hint">カードに入るとカーソル変化</span>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>② クロスヘア（P5照準）</h2>
+      <span class="desc">十字マーカー＋中央ドット。怪盗団的な狙い定める感</span>
+    </div>
+    <div class="stage stage-2" data-stage="2">
+      <div class="c-crosshair"></div>
+      <div class="c-dot"></div>
+      <button class="sample-btn">TARGET</button>
+      <span class="hint">狙いを定める</span>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>③ グロー・オーラ</h2>
+      <span class="desc">金色のぼんやりした光が追従。耽美・幻想</span>
+    </div>
+    <div class="stage stage-3" data-stage="3">
+      <div class="c-glow"></div>
+      <div class="c-dot"></div>
+      <button class="sample-btn">GLOW</button>
+      <span class="hint">光をまとう</span>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>④ パーティクル・トレイル</h2>
+      <span class="desc">軌跡に金の粒子が残って消える</span>
+    </div>
+    <div class="stage stage-4" data-stage="4">
+      <canvas></canvas>
+      <button class="sample-btn">TRAIL</button>
+      <span class="hint">軌跡が残る</span>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>⑤ ブレンド反転</h2>
+      <span class="desc">カーソル位置の色を反転する大きな円。スタイリッシュ</span>
+    </div>
+    <div class="stage stage-5" data-stage="5">
+      <div class="c-blend"></div>
+      <button class="sample-btn">INVERT</button>
+      <span class="hint">色が反転</span>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>⑥ ダイアモンド→スクエア</h2>
+      <span class="desc">菱形の枠が追従、ボタンで四角に拡大＆塗り</span>
+    </div>
+    <div class="stage stage-6" data-stage="6">
+      <div class="c-square"></div>
+      <button class="sample-btn">EXPAND</button>
+      <span class="hint">マグネット吸着風</span>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>⑦ コメット（流星）</h2>
+      <span class="desc">長めの光の尾を引く。動きが派手</span>
+    </div>
+    <div class="stage stage-7" data-stage="7">
+      <canvas></canvas>
+      <button class="sample-btn">COMET</button>
+      <span class="hint">尾を引く</span>
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>⑧ RGBスプリット</h2>
+      <span class="desc">シアン/マゼンタにズレるドット＋回転する点線リング</span>
+    </div>
+    <div class="stage stage-8" data-stage="8">
+      <div class="c-ring"></div>
+      <div class="c-dot"></div>
+      <button class="sample-btn">GLITCH</button>
+      <span class="hint">サイバー寄り</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="foot">
+  気に入ったものを <strong>①〜⑧</strong> で教えてください。<br>
+  組み合わせや調整（色・サイズ・速度）もOK。
+</div>
+
+<script>
+// ========== Generic cursor follower for stages 1,2,3,5,6,8 ==========
+document.querySelectorAll('.stage').forEach(stage => {
+  const id = stage.dataset.stage;
+  const dot = stage.querySelector('.c-dot');
+  const ring = stage.querySelector('.c-ring');
+  const ch = stage.querySelector('.c-crosshair');
+  const glow = stage.querySelector('.c-glow');
+  const sq = stage.querySelector('.c-square');
+  const bl = stage.querySelector('.c-blend');
+
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  stage.addEventListener('mouseenter', () => stage.classList.add('active'));
+  stage.addEventListener('mouseleave', () => stage.classList.remove('active'));
+
+  stage.addEventListener('mousemove', (e) => {
+    const r = stage.getBoundingClientRect();
+    mx = e.clientX - r.left;
+    my = e.clientY - r.top;
+    if (dot) dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+    if (ch) ch.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+    if (glow) glow.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+    if (bl) bl.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+  });
+
+  // Ring with easing lag
+  if (ring) {
+    function animateRing() {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      const extra = id === '8' ? 'rotate(var(--r,0deg))' : '';
+      ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+  }
+  if (sq) {
+    function animateSq() {
+      rx += (mx - rx) * 0.2;
+      ry += (my - ry) * 0.2;
+      sq.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%) rotate(45deg)`;
+      requestAnimationFrame(animateSq);
+    }
+    animateSq();
+  }
+
+  // Button hover detection for stages with expand
+  const btn = stage.querySelector('.sample-btn');
+  if (btn && (id === '1' || id === '5' || id === '6')) {
+    btn.addEventListener('mouseenter', () => stage.classList.add('hover-btn'));
+    btn.addEventListener('mouseleave', () => stage.classList.remove('hover-btn'));
+  }
+});
+
+// ========== Particle trail (stage 4) ==========
+(function particleTrail() {
+  const stage = document.querySelector('.stage-4');
+  const canvas = stage.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let active = false;
+  function resize() {
+    canvas.width = stage.clientWidth;
+    canvas.height = stage.clientHeight;
+  }
+  resize(); window.addEventListener('resize', resize);
+  stage.addEventListener('mouseenter', () => active = true);
+  stage.addEventListener('mouseleave', () => active = false);
+  stage.addEventListener('mousemove', (e) => {
+    if (!active) return;
+    const r = stage.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    for (let i = 0; i < 2; i++) {
+      particles.push({
+        x, y,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: (Math.random() - 0.5) * 0.8 - 0.3,
+        life: 60, age: 0,
+        r: Math.random() * 2.5 + 1
+      });
+    }
+  });
+  function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles = particles.filter(p => p.age < p.life);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.age++;
+      const a = 1 - (p.age / p.life);
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(201, 176, 55, ${a})`;
+      ctx.shadowColor = 'rgba(201, 176, 55, 1)';
+      ctx.shadowBlur = 8;
+      ctx.arc(p.x, p.y, p.r * a, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+// ========== Comet (stage 7) ==========
+(function comet() {
+  const stage = document.querySelector('.stage-7');
+  const canvas = stage.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+  let trail = [];
+  let active = false;
+  let mx = 0, my = 0;
+  function resize() {
+    canvas.width = stage.clientWidth;
+    canvas.height = stage.clientHeight;
+  }
+  resize(); window.addEventListener('resize', resize);
+  stage.addEventListener('mouseenter', () => active = true);
+  stage.addEventListener('mouseleave', () => { active = false; trail = []; });
+  stage.addEventListener('mousemove', (e) => {
+    if (!active) return;
+    const r = stage.getBoundingClientRect();
+    mx = e.clientX - r.left; my = e.clientY - r.top;
+  });
+  function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (active) {
+      trail.push({ x: mx, y: my });
+      if (trail.length > 30) trail.shift();
+      for (let i = 0; i < trail.length - 1; i++) {
+        const a = i / trail.length;
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(201, 176, 55, ${a})`;
+        ctx.lineWidth = a * 6;
+        ctx.lineCap = 'round';
+        ctx.shadowColor = 'rgba(201, 176, 55, 0.8)';
+        ctx.shadowBlur = 12;
+        ctx.moveTo(trail[i].x, trail[i].y);
+        ctx.lineTo(trail[i+1].x, trail[i+1].y);
+        ctx.stroke();
+      }
+      // head dot
+      if (trail.length) {
+        const h = trail[trail.length-1];
+        ctx.beginPath();
+        ctx.fillStyle = '#fff';
+        ctx.shadowBlur = 16;
+        ctx.arc(h.x, h.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+</script>
+</body>
+</html>
