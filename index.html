@@ -1755,53 +1755,26 @@ ul, ol { list-style: none; }
   html.has-cursor select,
   html.has-cursor [role="button"] { cursor: none; }
 }
-.cursor-blend,
-.cursor-diamond {
+.cursor-blend {
   position: fixed;
   top: 0; left: 0;
   pointer-events: none;
   z-index: 10000;
   opacity: 0;
-  transition: opacity 0.25s, width 0.3s cubic-bezier(0.2,0.9,0.2,1),
-              height 0.3s cubic-bezier(0.2,0.9,0.2,1),
-              background 0.25s, border-radius 0.3s, border-color 0.25s;
-  will-change: transform, width, height;
-}
-html.has-cursor .cursor-blend,
-html.has-cursor .cursor-diamond { opacity: 1; }
-
-.cursor-blend {
   width: 70px; height: 70px;
   background: var(--off-white);
   border-radius: 50%;
   mix-blend-mode: difference;
   transform: translate(-50%, -50%);
+  transition: opacity 0.25s, width 0.3s cubic-bezier(0.2,0.9,0.2,1),
+              height 0.3s cubic-bezier(0.2,0.9,0.2,1);
+  will-change: transform, width, height;
 }
-.cursor-diamond {
-  width: 22px; height: 22px;
-  border: 2px solid var(--yellow);
-  box-shadow: 0 0 8px rgba(201, 176, 55, 0.4);
-  background: transparent;
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-html.cursor-hover .cursor-blend {
-  width: 130px; height: 130px;
-}
-html.cursor-hover .cursor-diamond {
-  width: 70px; height: 70px;
-  background: rgba(201, 176, 55, 0.28);
-  border-radius: 8px;
-  border-color: var(--yellow);
-}
-html.cursor-down .cursor-diamond {
-  width: 16px; height: 16px;
-  background: var(--yellow);
-}
-html.cursor-down .cursor-blend {
-  width: 50px; height: 50px;
-}
+html.has-cursor .cursor-blend { opacity: 1; }
+html.cursor-hover .cursor-blend { width: 130px; height: 130px; }
+html.cursor-down .cursor-blend { width: 50px; height: 50px; }
 @media (prefers-reduced-motion: reduce) {
-  .cursor-blend, .cursor-diamond { display: none; }
+  .cursor-blend { display: none; }
 }
 </style>
 </head>
@@ -1824,7 +1797,6 @@ html.cursor-down .cursor-blend {
 
 <!-- CUSTOM CURSOR -->
 <div class="cursor-blend" id="cursorBlend"></div>
-<div class="cursor-diamond" id="cursorDiamond"></div>
 
 <!-- NOISE OVERLAY -->
 <div class="noise"></div>
@@ -2396,14 +2368,12 @@ window.addEventListener('load', () => {
   // Only on devices that have fine pointer (mouse)
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const blend = document.getElementById('cursorBlend');
-  const diamond = document.getElementById('cursorDiamond');
-  if (!blend || !diamond) return;
+  if (!blend) return;
 
   document.documentElement.classList.add('has-cursor');
 
   let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-  let bx = mx, by = my; // blend follows with lag
-  let dx = mx, dy = my; // diamond tracks tightly but smooth
+  let bx = mx, by = my;
 
   window.addEventListener('mousemove', (e) => {
     mx = e.clientX; my = e.clientY;
@@ -2426,14 +2396,8 @@ window.addEventListener('load', () => {
   });
 
   function tick() {
-    // diamond: fast ease (0.3)
-    dx += (mx - dx) * 0.35;
-    dy += (my - dy) * 0.35;
-    // blend: slow ease (0.15)
-    bx += (mx - bx) * 0.16;
-    by += (my - by) * 0.16;
-
-    diamond.style.transform = `translate(${dx}px, ${dy}px) translate(-50%, -50%) rotate(${document.documentElement.classList.contains('cursor-hover') ? 0 : 45}deg)`;
+    bx += (mx - bx) * 0.2;
+    by += (my - by) * 0.2;
     blend.style.transform = `translate(${bx}px, ${by}px) translate(-50%, -50%)`;
     requestAnimationFrame(tick);
   }
