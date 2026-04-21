@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STUDIO ARTS ｜スタジオアーツ 公式サイト</title>
+<meta name="description" content="マーダーミステリー制作チーム『STUDIO ARTS』公式サイト。役を、生きろ。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Noto+Serif+JP:wght@700;900&family=Shippori+Mincho+B1:wght@700;800&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Particles canvas -->
+<canvas id="particles"></canvas>
+
+<!-- Traditional pattern bg -->
+<div class="bg-pattern"></div>
+
+<!-- Fixed logo -->
+<a href="#" class="fixed-logo">
+  <span class="logo-jp">スタジオ<br>アーツ</span>
+  <span class="logo-en">STUDIO ARTS</span>
+</a>
+
+<!-- Vertical side menu -->
+<nav class="side-menu">
+  <div class="side-top">
+    <div class="side-line"></div>
+  </div>
+  <ul class="side-list">
+    <li><a href="#top">最新情報</a></li>
+    <li><a href="#works">作品一覧</a></li>
+    <li><a href="#about">イントロダクション</a></li>
+    <li><a href="#pillars">制作理念</a></li>
+    <li><a href="#news">お知らせ</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+    <li><a href="#sns">スペシャル</a></li>
+  </ul>
+  <div class="side-bottom">
+    <span class="side-label">OFFICIAL</span>
+    <a href="https://x.com/STUDIOARTS_" target="_blank" rel="noopener" class="side-sns">𝕏</a>
+    <a href="https://uzu.app/" target="_blank" rel="noopener" class="side-sns">◎</a>
+    <div class="side-line"></div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="top" class="hero">
+  <!-- Neon line art decorations -->
+  <svg class="neon-deco neon-cloud-1" viewBox="0 0 200 60" aria-hidden="true">
+    <path d="M10,40 Q30,20 50,30 T90,30 M10,50 Q40,35 70,45 T130,45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+  <svg class="neon-deco neon-cloud-2" viewBox="0 0 200 60" aria-hidden="true">
+    <path d="M10,40 Q30,20 50,30 T90,30 M10,50 Q40,35 70,45 T130,45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+  <svg class="neon-deco neon-fish" viewBox="0 0 80 60" aria-hidden="true">
+    <path d="M15,30 Q25,15 45,20 Q65,25 70,30 Q65,35 45,40 Q25,45 15,30 Z M65,30 L78,22 L78,38 Z M22,28 a2,2 0 1,0 0.1,0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </svg>
+  <svg class="neon-deco neon-flower" viewBox="0 0 80 80" aria-hidden="true">
+    <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="40" cy="40" r="6"/>
+      <ellipse cx="40" cy="20" rx="5" ry="10"/>
+      <ellipse cx="60" cy="40" rx="10" ry="5"/>
+      <ellipse cx="40" cy="60" rx="5" ry="10"/>
+      <ellipse cx="20" cy="40" rx="10" ry="5"/>
+    </g>
+  </svg>
+
+  <div class="hero-circle">
+    <div class="hero-circle-inner">
+      <div class="hero-sparkle sparkle-1"></div>
+      <div class="hero-sparkle sparkle-2"></div>
+      <div class="hero-sparkle sparkle-3"></div>
+      <div class="hero-center">
+        <h1 class="hero-logo">
+          <span class="hero-logo-jp">役を、<em>生きろ</em>。</span>
+          <span class="hero-logo-en">Live Your Role ✦ Studio Arts</span>
+        </h1>
+      </div>
+    </div>
+    <div class="hero-ring"></div>
+    <div class="hero-ring hero-ring-2"></div>
+  </div>
+
+  <div class="hero-lead-box">
+    <p class="hero-lead-jp">
+      <span class="hi">心を盗む物語</span>が、<br>
+      <span class="hi">この卓で生まれ変わる。</span>
+    </p>
+  </div>
+
+  <div class="hero-tag">
+    <div class="hero-tag-inner">
+      <p class="hero-tag-title">全16作品<br>UZUにて公開中</p>
+      <p class="hero-tag-sub">Only on UZU / UZU TOKYO</p>
+    </div>
+    <a href="#works" class="hero-tag-btn">
+      <span>作品一覧</span>
+      <span>WORKS ▶</span>
+    </a>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-ind">
+    <span>SCROLL</span>
+    <div class="scroll-bar"></div>
+  </div>
+</section>
+
+<!-- INTRODUCTION -->
+<section id="about" class="section intro-sec">
+  <header class="sec-head">
+    <h2 class="sec-title">
+      <span class="bracket">[</span>
+      <span class="sec-en">INTRODUCTION</span>
+      <span class="bracket">]</span>
+    </h2>
+    <span class="sec-jp">イントロダクション</span>
+  </header>
+
+  <div class="intro-body">
+    <p class="intro-kicker">マーダーミステリー制作チーム</p>
+    <h3 class="intro-title">
+      <span class="hi">『STUDIO ARTS』</span> <span class="x-mark">×</span> <span class="intro-title-sub">物語の錬金術</span>
+    </h3>
+    <p class="intro-cyan">多彩な世界観が織りなす、新時代のマダミス体験。</p>
+
+    <div class="intro-text">
+      <p>
+        2024年、3人のクリエイターによって結成された
+        <span class="hi">マーダーミステリー制作チーム。</span><br>
+        和風、ゴシック、スチームパンク、サイバーパンク──<br>
+        プレイヤーの <span class="hi">心を盗む物語</span> を紡ぎ続けている。
+      </p>
+      <p>
+        結成から2年、UZUアプリにて<span class="hi">15作品</span>、<br>
+        UZU TOKYOにて<span class="hi">1作品</span>を公開。<br>
+        テストプレイヤーの声を大切にし、"遊ばれて完成する" マダミスを目指す。
+      </p>
+      <p>
+        物語を、ただ読むのではなく <span class="hi">生きる</span>こと。<br>
+        それが、スタジオアーツが提供する最大の体験である。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works" class="section works-sec">
+  <header class="sec-head">
+    <h2 class="sec-title">
+      <span class="bracket">[</span>
+      <span class="sec-en">WORKS</span>
+      <span class="bracket">]</span>
+    </h2>
+    <span class="sec-jp">作品一覧</span>
+  </header>
+
+  <div class="works-carousel">
+    <article class="work-slide">
+      <div class="work-frame">
+        <div class="work-img" style="background-image:url('../images/11.png')"></div>
+        <span class="work-tag">#01</span>
+      </div>
+      <h3 class="work-title">黒煙街のエリー</h3>
+      <p class="work-sub">スチームパンク × 駆け引き × RP</p>
+    </article>
+
+    <article class="work-slide">
+      <div class="work-frame">
+        <div class="work-img" style="background-image:url('../images/10.png')"></div>
+        <span class="work-tag">#02</span>
+      </div>
+      <h3 class="work-title">CRADLE MEMOIR</h3>
+      <p class="work-sub">ゴシック × 王道推理</p>
+    </article>
+
+    <article class="work-slide">
+      <div class="work-frame">
+        <div class="work-img" style="background-image:url('../images/8.png')"></div>
+        <span class="work-tag">#03</span>
+      </div>
+      <h3 class="work-title">ペトリコールを纏って</h3>
+      <p class="work-sub">アンニュイ × エモーショナル</p>
+    </article>
+
+    <article class="work-slide">
+      <div class="work-frame">
+        <div class="work-img" style="background-image:url('../images/１０８.png')"></div>
+        <span class="work-tag">#04</span>
+      </div>
+      <h3 class="work-title">妖の國 <small>ー百八夜と泡沫の結びー</small></h3>
+      <p class="work-sub">和風 × サイバーパンク × RP</p>
+    </article>
+
+    <article class="work-slide">
+      <div class="work-frame">
+        <div class="work-img" style="background-image:url('../images/華恋.png')"></div>
+        <span class="work-tag">#05</span>
+      </div>
+      <h3 class="work-title">華唄こいこい、毒味で一杯</h3>
+      <p class="work-sub">ペアマダミス × 和風 × 駆け引き</p>
+    </article>
+  </div>
+
+  <div class="carousel-dots">
+    <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+  </div>
+
+  <p class="works-more">and more... <span class="hi">全16作品 UZUアプリにて公開中</span></p>
+</section>
+
+<!-- PILLARS -->
+<section id="pillars" class="section pillars-sec">
+  <header class="sec-head">
+    <h2 class="sec-title">
+      <span class="bracket">[</span>
+      <span class="sec-en">PHILOSOPHY</span>
+      <span class="bracket">]</span>
+    </h2>
+    <span class="sec-jp">制作理念</span>
+  </header>
+
+  <div class="pillars-grid">
+    <article class="pillar">
+      <span class="pillar-no">01</span>
+      <h3>物語を、生きる。</h3>
+      <p>プレイヤーが"主人公になる"物語体験を。世界観と感情の揺さぶりに徹底的にこだわる。</p>
+    </article>
+    <article class="pillar">
+      <span class="pillar-no">02</span>
+      <h3>謎は、美しく。</h3>
+      <p>王道の論理推理から、心理戦までを緻密に設計。プレイヤー同士が交わる瞬間にドラマを。</p>
+    </article>
+    <article class="pillar">
+      <span class="pillar-no">03</span>
+      <h3>役は、真実。</h3>
+      <p>読み合わせ・ロールプレイを楽しむための繊細なキャラクター造形。演じる悦びを届ける。</p>
+    </article>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news" class="section news-sec">
+  <header class="sec-head">
+    <h2 class="sec-title">
+      <span class="bracket">[</span>
+      <span class="sec-en">NEWS</span>
+      <span class="bracket">]</span>
+    </h2>
+    <span class="sec-jp">お知らせ</span>
+  </header>
+
+  <ul class="news-list">
+    <li>
+      <span class="news-date">2026.04</span>
+      <span class="news-cat news-cat-pink">ANNIVERSARY</span>
+      <span class="news-text">結成2周年🎉 感謝祭を開催中。リポストキャンペーン＆セール実施。</span>
+    </li>
+    <li>
+      <span class="news-date">2026.04</span>
+      <span class="news-cat news-cat-cyan">RELEASE</span>
+      <span class="news-text">新作『QUARTET ADVENTURE』UZUにて公開開始。</span>
+    </li>
+    <li>
+      <span class="news-date">ONGOING</span>
+      <span class="news-cat news-cat-yellow">RECRUIT</span>
+      <span class="news-text">テストプレイヤー随時募集中。ご応募はXのDMまで。</span>
+    </li>
+    <li>
+      <span class="news-date">ONGOING</span>
+      <span class="news-cat news-cat-cyan">INFO</span>
+      <span class="news-text">UZU TOKYOにて対面マダミス1作品を公開中。</span>
+    </li>
+  </ul>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section contact-sec">
+  <header class="sec-head">
+    <h2 class="sec-title">
+      <span class="bracket">[</span>
+      <span class="sec-en">CONTACT</span>
+      <span class="bracket">]</span>
+    </h2>
+    <span class="sec-jp">お問い合わせ</span>
+  </header>
+
+  <div class="contact-body">
+    <p class="contact-lead">
+      制作依頼・テストプレイ応募・メディア掲載などのお問い合わせは<br>
+      <span class="hi">下記フォーム</span> または <span class="hi">XのDM</span> にて。
+    </p>
+
+    <form class="contact-form" onsubmit="return v2Submit(event)">
+      <label>
+        <span>お名前 / NAME</span>
+        <input type="text" required>
+      </label>
+      <label>
+        <span>メール / EMAIL</span>
+        <input type="email" required>
+      </label>
+      <label>
+        <span>件名 / SUBJECT</span>
+        <select>
+          <option>制作依頼</option>
+          <option>テストプレイ応募</option>
+          <option>メディア掲載</option>
+          <option>その他</option>
+        </select>
+      </label>
+      <label>
+        <span>内容 / MESSAGE</span>
+        <textarea rows="4" required></textarea>
+      </label>
+      <button type="submit">
+        <span>SEND MESSAGE</span>
+        <span>▶</span>
+      </button>
+      <p class="form-note" id="v2Note"></p>
+    </form>
+
+    <div class="contact-sns">
+      <a href="https://x.com/STUDIOARTS_" target="_blank" rel="noopener" class="sns-btn">
+        <span class="sns-ic">𝕏</span>
+        <span>X (Twitter)</span>
+        <span>@STUDIOARTS_</span>
+      </a>
+      <a href="https://uzu.app/" target="_blank" rel="noopener" class="sns-btn">
+        <span class="sns-ic">◎</span>
+        <span>UZU APP</span>
+        <span>全16作品公開中</span>
+      </a>
+      <a href="https://uzu-tokyo.com/" target="_blank" rel="noopener" class="sns-btn">
+        <span class="sns-ic">◈</span>
+        <span>UZU TOKYO</span>
+        <span>対面公演1作品</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="footer-logo-jp">スタジオアーツ</span>
+    <span class="footer-logo-en">STUDIO ARTS</span>
+    <p class="footer-tagline">役を、生きろ。 <span class="hi">Live Your Role.</span></p>
+    <p class="footer-copy">© 2024-2026 STUDIO ARTS. All Rights Reserved.</p>
+  </div>
+  <svg class="footer-deco" viewBox="0 0 400 60" aria-hidden="true">
+    <path d="M0,40 Q50,20 100,35 T200,35 T300,35 T400,35" fill="none" stroke="currentColor" stroke-width="2"/>
+  </svg>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
