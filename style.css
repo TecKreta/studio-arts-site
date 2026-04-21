@@ -1447,3 +1447,259 @@ ul, ol { list-style: none; }
   }
   .member-no { font-size: 48px; }
 }
+
+/* ============================================
+   LOADING SPLASH
+   ============================================ */
+.loader {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  animation: loaderOut 0.9s 1.6s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+}
+.loader.done { pointer-events: none; }
+@keyframes loaderOut {
+  0%   { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+  100% { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); }
+}
+.loader-stripe {
+  position: absolute; left: -10%; width: 140%;
+  padding: 12px 0;
+  background: var(--yellow);
+  color: var(--black);
+  font-family: var(--font-en);
+  font-weight: 700; letter-spacing: 0.2em;
+  font-size: 14px;
+  display: flex; gap: 28px; white-space: nowrap;
+  transform: rotate(-4deg);
+  box-shadow: 0 8px 0 rgba(0,0,0,0.4);
+  animation: loaderStripe 14s linear infinite;
+}
+.loader-stripe span { display: inline-block; }
+.loader-stripe-1 { top: 22%; }
+.loader-stripe-2 { bottom: 22%; transform: rotate(3deg); animation-direction: reverse; background: var(--off-white); }
+@keyframes loaderStripe {
+  0% { transform: rotate(-4deg) translateX(0); }
+  100% { transform: rotate(-4deg) translateX(-30%); }
+}
+.loader-stripe-2 { animation-name: loaderStripe2; }
+@keyframes loaderStripe2 {
+  0% { transform: rotate(3deg) translateX(0); }
+  100% { transform: rotate(3deg) translateX(-30%); }
+}
+.loader-center {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 22px;
+  animation: loaderPop 0.6s cubic-bezier(0.2, 1.2, 0.3, 1) both;
+}
+@keyframes loaderPop {
+  0% { transform: scale(0.6) rotate(-6deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+.loader-logo {
+  font-family: var(--font-display);
+  font-size: clamp(80px, 14vw, 180px);
+  line-height: 1;
+  color: var(--off-white);
+  display: flex; align-items: center;
+  text-shadow: 6px 6px 0 var(--red), 12px 12px 0 rgba(0,0,0,0.6);
+}
+.loader-logo em {
+  color: var(--yellow); font-style: normal;
+  margin: 0 -0.1em; transform: skewX(-18deg);
+  display: inline-block;
+}
+.loader-bar {
+  width: min(320px, 60vw); height: 6px;
+  background: rgba(255,255,255,0.12);
+  overflow: hidden;
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+}
+.loader-bar-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--red), var(--yellow));
+  animation: loaderBar 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes loaderBar {
+  0%   { width: 0%; }
+  100% { width: 100%; }
+}
+.loader-txt {
+  font-family: var(--font-en);
+  letter-spacing: 0.3em; font-size: 12px;
+  color: rgba(229, 219, 201, 0.7);
+}
+.loader-dots::after {
+  content: ""; display: inline-block;
+  width: 2ch; text-align: left;
+  animation: loaderDots 1s steps(4) infinite;
+}
+@keyframes loaderDots {
+  0%   { content: ""; }
+  25%  { content: "."; }
+  50%  { content: ".."; }
+  75%  { content: "..."; }
+  100% { content: ""; }
+}
+.loader-wipe {
+  position: absolute; inset: 0;
+  background: var(--red);
+  transform: translateX(-105%) skewX(-14deg);
+  animation: loaderWipe 0.7s 1.5s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+}
+@keyframes loaderWipe {
+  0%   { transform: translateX(-105%) skewX(-14deg); }
+  50%  { transform: translateX(0) skewX(-14deg); }
+  100% { transform: translateX(110%) skewX(-14deg); }
+}
+
+/* ============================================
+   SCROLL PROGRESS
+   ============================================ */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 3px; z-index: 500;
+  background: transparent;
+  pointer-events: none;
+}
+.scroll-progress::after {
+  content: "";
+  display: block; height: 100%;
+  width: var(--sp, 0%);
+  background: linear-gradient(90deg, var(--yellow), var(--red));
+  box-shadow: 0 0 8px rgba(201, 176, 55, 0.6);
+  transition: width 0.08s linear;
+}
+
+/* ============================================
+   EXTRA ANIMATIONS — hero / sections / works
+   ============================================ */
+/* Hero title entrance */
+.hero .title-line {
+  opacity: 0;
+  transform: translateX(-60px) skewX(-8deg);
+  animation: heroLineIn 0.9s cubic-bezier(0.2, 0.9, 0.2, 1) 2.0s forwards;
+}
+.hero .title-line.line-2 {
+  transform: translateX(60px) skewX(-8deg);
+  animation-delay: 2.25s;
+}
+.hero .title-line.line-3 {
+  animation-delay: 2.5s;
+}
+@keyframes heroLineIn {
+  0%   { opacity: 0; transform: translateX(-60px) skewX(-8deg); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0) skewX(0); }
+}
+.hero .title-line.line-2 { animation-name: heroLineInRight; }
+@keyframes heroLineInRight {
+  0%   { opacity: 0; transform: translateX(60px) skewX(-8deg); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0) skewX(0); }
+}
+.hero .hero-kicker,
+.hero .hero-lead,
+.hero .hero-actions,
+.hero .hero-badge {
+  opacity: 0;
+  animation: heroFadeUp 0.7s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+.hero .hero-kicker { animation-delay: 1.9s; }
+.hero .hero-badge  { animation-delay: 2.1s; }
+.hero .hero-lead   { animation-delay: 2.7s; }
+.hero .hero-actions{ animation-delay: 2.9s; }
+@keyframes heroFadeUp {
+  0%   { opacity: 0; transform: translateY(24px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Section head wipe reveal */
+.section-head {
+  position: relative; overflow: hidden;
+}
+.section-head.reveal::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--yellow);
+  transform: translateX(-105%) skewX(-12deg);
+  z-index: 2;
+}
+.section-head.reveal.visible::before {
+  animation: headWipe 0.9s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+}
+@keyframes headWipe {
+  0%   { transform: translateX(-105%) skewX(-12deg); }
+  45%  { transform: translateX(0) skewX(-12deg); }
+  100% { transform: translateX(110%) skewX(-12deg); }
+}
+
+/* Works card hover — tilt + glitch shadow */
+.work-card {
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1), box-shadow 0.35s;
+}
+.work-card:hover {
+  transform: translateY(-6px) rotate(-1.2deg) scale(1.02);
+  box-shadow:
+    -6px 6px 0 var(--red),
+    6px 10px 0 var(--yellow),
+    0 20px 40px rgba(0,0,0,0.5);
+}
+.work-card::before {
+  mix-blend-mode: screen;
+}
+.work-card:hover .work-img img {
+  transform: scale(1.08) rotate(-0.8deg);
+  filter: saturate(1.15) contrast(1.05);
+}
+.work-img img { transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.2, 1), filter 0.5s; }
+
+/* Member card tilt on hover */
+.member-card {
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.2, 1), box-shadow 0.4s;
+}
+.member-card:hover {
+  transform: translateY(-4px) rotate(var(--rot, 0)) scale(1.015);
+  box-shadow: 16px 16px 0 rgba(201, 176, 55, 0.35);
+}
+
+/* Nav link underline glow on hover */
+.nav-list a {
+  position: relative;
+}
+.nav-list a:hover {
+  color: var(--yellow);
+  text-shadow: 0 0 8px rgba(201, 176, 55, 0.5);
+}
+
+/* Hero shapes slow float */
+.hero .shape {
+  animation: shapeFloat 12s ease-in-out infinite alternate;
+}
+.hero .shape-2 { animation-duration: 16s; animation-delay: -4s; }
+.hero .shape-3 { animation-duration: 20s; animation-delay: -8s; }
+@keyframes shapeFloat {
+  0%   { translate: 0 0; }
+  50%  { translate: 12px -16px; }
+  100% { translate: -8px 14px; }
+}
+
+/* Marquee stripe — ensure infinite scroll */
+.hero-stripe {
+  animation: stripeScroll 22s linear infinite;
+}
+@keyframes stripeScroll {
+  0%   { transform: translateX(0) rotate(-2deg); }
+  100% { transform: translateX(-50%) rotate(-2deg); }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .loader { animation: none; display: none; }
+}

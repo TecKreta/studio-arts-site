@@ -121,6 +121,36 @@ function closePanel() {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePanel(); });
 })();
 
+// ============================================
+// LOADER — hide after animation completes
+// ============================================
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loader');
+  if (!loader) return;
+  setTimeout(() => {
+    loader.classList.add('done');
+    loader.style.display = 'none';
+  }, 2600);
+});
+
+// ============================================
+// SCROLL PROGRESS BAR
+// ============================================
+(function scrollProgress() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  function update() {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (scrolled / max) * 100 : 0;
+    bar.style.setProperty('--sp', pct + '%');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+
 // Parallax on hero shapes
 const shapes = document.querySelectorAll('.hero .shape');
 window.addEventListener('mousemove', (e) => {
