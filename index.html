@@ -1757,26 +1757,63 @@ ul, ol { list-style: none; }
   html.has-cursor select,
   html.has-cursor [role="button"] { cursor: none; }
 }
-.cursor-blend {
+.cursor-blend,
+.cursor-ring,
+.cursor-dot {
   position: fixed;
   top: 0; left: 0;
   pointer-events: none;
-  z-index: 10000;
   opacity: 0;
-  width: 70px; height: 70px;
+  transform: translate(-50%, -50%);
+  will-change: transform, width, height;
+}
+.cursor-blend {
+  z-index: 10000;
+  width: 50px; height: 50px;
   background: var(--off-white);
   border-radius: 50%;
   mix-blend-mode: difference;
-  transform: translate(-50%, -50%);
   transition: opacity 0.25s, width 0.3s cubic-bezier(0.2,0.9,0.2,1),
               height 0.3s cubic-bezier(0.2,0.9,0.2,1);
-  will-change: transform, width, height;
 }
-html.has-cursor .cursor-blend { opacity: 1; }
-html.cursor-hover .cursor-blend { width: 130px; height: 130px; }
-html.cursor-down .cursor-blend { width: 50px; height: 50px; }
+.cursor-ring {
+  z-index: 10001;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--yellow);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(201, 176, 55, 0.35);
+  transition: opacity 0.25s, width 0.3s cubic-bezier(0.2,0.9,0.2,1),
+              height 0.3s cubic-bezier(0.2,0.9,0.2,1),
+              background 0.25s, border-color 0.25s;
+}
+.cursor-dot {
+  z-index: 10002;
+  width: 8px; height: 8px;
+  background: var(--yellow);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--yellow);
+  transition: opacity 0.2s, width 0.2s, height 0.2s;
+}
+html.has-cursor .cursor-blend,
+html.has-cursor .cursor-ring,
+html.has-cursor .cursor-dot { opacity: 1; }
+
+/* Hover state */
+html.cursor-hover .cursor-blend { width: 100px; height: 100px; }
+html.cursor-hover .cursor-ring  {
+  width: 80px; height: 80px;
+  background: rgba(201, 176, 55, 0.18);
+  border-color: var(--yellow);
+}
+html.cursor-hover .cursor-dot { width: 6px; height: 6px; }
+
+/* Press state */
+html.cursor-down .cursor-blend { width: 40px; height: 40px; }
+html.cursor-down .cursor-ring  { width: 28px; height: 28px; }
+html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
+
 @media (prefers-reduced-motion: reduce) {
-  .cursor-blend { display: none; }
+  .cursor-blend, .cursor-ring, .cursor-dot { display: none; }
 }
 </style>
 </head>
@@ -1799,6 +1836,8 @@ html.cursor-down .cursor-blend { width: 50px; height: 50px; }
 
 <!-- CUSTOM CURSOR -->
 <div class="cursor-blend" id="cursorBlend"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
 
 <!-- NOISE OVERLAY -->
 <div class="noise"></div>
@@ -2370,15 +2409,20 @@ window.addEventListener('load', () => {
   // Only on devices that have fine pointer (mouse)
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const blend = document.getElementById('cursorBlend');
-  if (!blend) return;
+  const ring  = document.getElementById('cursorRing');
+  const dot   = document.getElementById('cursorDot');
+  if (!blend || !ring || !dot) return;
 
   document.documentElement.classList.add('has-cursor');
 
   let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-  let bx = mx, by = my;
+  let bx = mx, by = my; // blend — slow lag
+  let rx = mx, ry = my; // ring  — medium lag
 
   window.addEventListener('mousemove', (e) => {
     mx = e.clientX; my = e.clientY;
+    // dot: precise (no easing)
+    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
   });
 
   window.addEventListener('mousedown', () => document.documentElement.classList.add('cursor-down'));
@@ -2398,8 +2442,13 @@ window.addEventListener('load', () => {
   });
 
   function tick() {
-    bx += (mx - bx) * 0.2;
-    by += (my - by) * 0.2;
+    // ring: medium ease (~0.22)
+    rx += (mx - rx) * 0.22;
+    ry += (my - ry) * 0.22;
+    // blend: slow ease (~0.14)
+    bx += (mx - bx) * 0.14;
+    by += (my - by) * 0.14;
+    ring.style.transform  = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
     blend.style.transform = `translate(${bx}px, ${by}px) translate(-50%, -50%)`;
     requestAnimationFrame(tick);
   }
