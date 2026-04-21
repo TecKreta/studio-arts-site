@@ -3,15 +3,15 @@
    ============================================ */
 
 :root {
-  --red: #e60012;
-  --red-dark: #a80010;
-  --red-glow: #ff1a2e;
-  --black: #0a0a0a;
-  --black-soft: #141414;
-  --gray: #2a2a2a;
-  --off-white: #f2ead3;
+  --red: #2D1B3D;
+  --red-dark: #1A0F26;
+  --red-glow: #4A2D66;
+  --black: #0D0B10;
+  --black-soft: #171320;
+  --gray: #2a2540;
+  --off-white: #E5DBC9;
   --white: #ffffff;
-  --yellow: #f5d547;
+  --yellow: #C9B037;
 
   --font-jp: "Shippori Mincho B1", "Zen Kaku Gothic New", serif;
   --font-gothic: "Zen Kaku Gothic New", sans-serif;
