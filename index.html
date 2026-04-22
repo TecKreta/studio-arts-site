@@ -144,6 +144,36 @@ body.theme-lapis {
   --black: #020814; --black-soft: #071224; --gray: #132439;
   --off-white: #E4F1F6; --yellow: #7FC7D9;
 }
+/* 20. Midnight Chrome */
+body.theme-chrome {
+  --red: #1a1d26; --red-dark: #0f1219; --red-glow: #2e3345;
+  --black: #0A0A0F; --black-soft: #12141c; --gray: #20242f;
+  --off-white: #E8ECF2; --yellow: #C5CDD9;
+}
+/* 21. Carbon Steel */
+body.theme-carbon {
+  --red: #1E2126; --red-dark: #14161a; --red-glow: #323842;
+  --black: #08090c; --black-soft: #13151a; --gray: #252931;
+  --off-white: #E1EBF2; --yellow: #6BB8D6;
+}
+/* 22. Slate Minimal */
+body.theme-slate {
+  --red: #2B2F35; --red-dark: #1c2026; --red-glow: #444a54;
+  --black: #0d0f12; --black-soft: #171a1f; --gray: #2a2e35;
+  --off-white: #EFE9DE; --yellow: #B8936A;
+}
+/* 23. Arctic Sapphire */
+body.theme-arctic {
+  --red: #0C1B2E; --red-dark: #061122; --red-glow: #1e3656;
+  --black: #020611; --black-soft: #0a111f; --gray: #14243c;
+  --off-white: #EAF2FB; --yellow: #4A90C0;
+}
+/* 24. Platinum Obsidian */
+body.theme-platinum {
+  --red: #0E0E10; --red-dark: #050506; --red-glow: #1f1f22;
+  --black: #050505; --black-soft: #0c0c0c; --gray: #1a1a1c;
+  --off-white: #F1F3F6; --yellow: #BEC2C9;
+}
 
 /* ============================================
    THEME PANEL
@@ -231,9 +261,43 @@ body.theme-lapis {
 }
 
 .theme-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.theme-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.theme-group-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(201, 176, 55, 0.25);
+}
+.theme-group-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+.theme-group-title {
+  font-family: var(--font-en);
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  color: var(--yellow);
+  font-weight: 700;
+}
+.theme-group-sub {
+  font-family: var(--font-gothic);
+  font-size: 11px;
+  color: rgba(229,219,201,0.5);
+  margin-left: auto;
+}
+.theme-group-body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  gap: 12px;
 }
 
 .theme-card {
@@ -2405,26 +2469,49 @@ window.addEventListener('scroll', () => {
 // ============================================
 // THEME PANEL
 // ============================================
+const THEME_CATEGORIES = [
+  { id: 'gothic',   icon: '🥀', title: 'GOTHIC',     sub: 'ゴシック・耽美' },
+  { id: 'noir',     icon: '🎩', title: 'NOIR',       sub: '探偵・ノワール' },
+  { id: 'japan',    icon: '⛩',  title: 'JAPAN',      sub: '和風・時代劇' },
+  { id: 'crime',    icon: '🩸', title: 'CRIME',      sub: 'クライム・血' },
+  { id: 'mystic',   icon: '🌿', title: 'MYSTIC',     sub: '神秘・自然' },
+  { id: 'industry', icon: '⚙',  title: 'INDUSTRY',   sub: '工業・錆' },
+  { id: 'cool',     icon: '❄',  title: 'COOL',       sub: 'クール・スタイリッシュ' },
+  { id: 'neon',     icon: '⚡', title: 'NEON',       sub: 'ネオン・サイバー' },
+];
 const THEMES = [
-  { id: 'default',  name: 'ゴシック・ヴィオレ', desc: '耽美／深紫×古金',       colors: ['#2D1B3D','#C9B037','#0D0B10','#E5DBC9'] },
-  { id: 'mahoyaku', name: 'ロイヤル・グリモワール', desc: '魔導書／深青×金', colors: ['#004986','#debb54','#000000','#f5e9b8'] },
-  { id: 'persona',  name: 'ファントム・クリムゾン', desc: '怪盗／真紅×黄',     colors: ['#e60012','#f5d547','#0a0a0a','#f2ead3'] },
-  { id: 'emerald',  name: 'エメラルド・ミステリー', desc: 'クラシック／深緑×真鍮', colors: ['#0B3D2E','#D4A84B','#0a0a0a','#EFE6D2'] },
-  { id: 'noir',     name: 'ミッドナイト・ノワール', desc: '夜霧／濃紺×古金',     colors: ['#0F2A4D','#C9A86A','#0A0A0A','#E8E2D0'] },
-  { id: 'wafu',     name: '和風ミステリー',       desc: '時代劇／朱×金茶×藍墨', colors: ['#C8102E','#E8C15F','#1B2631','#F4EFE0'] },
-  { id: 'sakura',   name: 'サクラ・ブラッド',     desc: '妖艶／桜紅×淡桜',       colors: ['#8B1A3B','#F5C6D0','#1A0E14','#F5E6DC'] },
-  { id: 'mono',     name: 'モノクローム・アサシン', desc: '反転／血紅×生成り',    colors: ['#B91C1C','#1C1C1C','#F5F1E8','#E5E5E5'] },
-  { id: 'cyber',      name: 'サイバー・ネオン',      desc: '電脳／マゼンタ×シアン',  colors: ['#FF2E8A','#00D9E8','#050A1F','#F4EFE0'] },
-  { id: 'bloodmoon',  name: 'ブラッド・ムーン',      desc: '夜の血月／深紅×橙',       colors: ['#7A0C2E','#E86A1A','#0A0505','#F5E4D0'] },
-  { id: 'abyss',      name: 'アビス・ティール',      desc: '深海の神秘／青緑×銀',     colors: ['#0D4F5C','#C0C5CE','#040e12','#E6EEF0'] },
-  { id: 'amethyst',   name: 'アメジスト・ヴェール',  desc: '妖しい紫水晶／紫×銀',     colors: ['#5B3A8A','#D4C1E8','#0F0A1A','#F0E6F5'] },
-  { id: 'hemoglobin', name: 'ヘモグロビン',          desc: 'クライム／血赤×氷白',     colors: ['#A0152A','#F5F8FC','#1a0608','#E8EEF4'] },
-  { id: 'onyx',       name: 'オニキス・ゴールド',    desc: '黒耀石と純金／高級',      colors: ['#000000','#D4AF37','#0c0c0c','#F5EBC0'] },
-  { id: 'rust',       name: 'アイアン・ラスト',      desc: '錆と鉄／工業ホラー',      colors: ['#5C3A2E','#B8763F','#1a120d','#EFE0CE'] },
-  { id: 'forest',     name: 'フォレスト・ウィッチ',  desc: '森の魔女／苔緑×琥珀',     colors: ['#1F3A2E','#D9A96A','#0a120d','#E8DFCB'] },
-  { id: 'paper',      name: 'ペーパー・ノワール',    desc: '古書×インク／探偵',       colors: ['#5a4a2d','#D8B35A','#2B2419','#F2EBD5'] },
-  { id: 'tokyo',      name: 'ネオン・トウキョウ',    desc: '渋谷の夜／紫×桃×空',      colors: ['#2B0B4F','#FF4FA8','#08031a','#F0E6FF'] },
-  { id: 'lapis',      name: 'アイス・ラピス',        desc: '氷塊×群青／北欧',         colors: ['#0A1F3D','#7FC7D9','#020814','#E4F1F6'] },
+  // GOTHIC
+  { id: 'default',    cat: 'gothic',   name: 'ゴシック・ヴィオレ',    desc: '耽美／深紫×古金',       colors: ['#2D1B3D','#C9B037','#0D0B10','#E5DBC9'] },
+  { id: 'mahoyaku',   cat: 'gothic',   name: 'ロイヤル・グリモワール', desc: '魔導書／深青×金',       colors: ['#004986','#debb54','#000000','#f5e9b8'] },
+  { id: 'amethyst',   cat: 'gothic',   name: 'アメジスト・ヴェール',  desc: '妖しい紫水晶／紫×銀',   colors: ['#5B3A8A','#D4C1E8','#0F0A1A','#F0E6F5'] },
+  { id: 'sakura',     cat: 'gothic',   name: 'サクラ・ブラッド',      desc: '妖艶／桜紅×淡桜',       colors: ['#8B1A3B','#F5C6D0','#1A0E14','#F5E6DC'] },
+  // NOIR
+  { id: 'noir',       cat: 'noir',     name: 'ミッドナイト・ノワール', desc: '夜霧／濃紺×古金',       colors: ['#0F2A4D','#C9A86A','#0A0A0A','#E8E2D0'] },
+  { id: 'paper',      cat: 'noir',     name: 'ペーパー・ノワール',    desc: '古書×インク／探偵',     colors: ['#5a4a2d','#D8B35A','#2B2419','#F2EBD5'] },
+  { id: 'emerald',    cat: 'noir',     name: 'エメラルド・ミステリー', desc: 'クラシック／深緑×真鍮', colors: ['#0B3D2E','#D4A84B','#0a0a0a','#EFE6D2'] },
+  // JAPAN
+  { id: 'wafu',       cat: 'japan',    name: '和風ミステリー',        desc: '時代劇／朱×金茶×藍墨',  colors: ['#C8102E','#E8C15F','#1B2631','#F4EFE0'] },
+  // CRIME
+  { id: 'persona',    cat: 'crime',    name: 'ファントム・クリムゾン', desc: '怪盗／真紅×黄',         colors: ['#e60012','#f5d547','#0a0a0a','#f2ead3'] },
+  { id: 'mono',       cat: 'crime',    name: 'モノクローム・アサシン', desc: '反転／血紅×生成り',     colors: ['#B91C1C','#1C1C1C','#F5F1E8','#E5E5E5'] },
+  { id: 'hemoglobin', cat: 'crime',    name: 'ヘモグロビン',          desc: 'クライム／血赤×氷白',   colors: ['#A0152A','#F5F8FC','#1a0608','#E8EEF4'] },
+  { id: 'bloodmoon',  cat: 'crime',    name: 'ブラッド・ムーン',      desc: '夜の血月／深紅×橙',     colors: ['#7A0C2E','#E86A1A','#0A0505','#F5E4D0'] },
+  // MYSTIC
+  { id: 'forest',     cat: 'mystic',   name: 'フォレスト・ウィッチ',  desc: '森の魔女／苔緑×琥珀',   colors: ['#1F3A2E','#D9A96A','#0a120d','#E8DFCB'] },
+  { id: 'abyss',      cat: 'mystic',   name: 'アビス・ティール',      desc: '深海の神秘／青緑×銀',   colors: ['#0D4F5C','#C0C5CE','#040e12','#E6EEF0'] },
+  // INDUSTRY
+  { id: 'rust',       cat: 'industry', name: 'アイアン・ラスト',      desc: '錆と鉄／工業ホラー',    colors: ['#5C3A2E','#B8763F','#1a120d','#EFE0CE'] },
+  { id: 'onyx',       cat: 'industry', name: 'オニキス・ゴールド',    desc: '黒耀石と純金／高級',    colors: ['#000000','#D4AF37','#0c0c0c','#F5EBC0'] },
+  // COOL
+  { id: 'chrome',     cat: 'cool',     name: 'ミッドナイト・クローム', desc: '夜の金属／漆黒×銀',     colors: ['#1a1d26','#C5CDD9','#0A0A0F','#E8ECF2'] },
+  { id: 'carbon',     cat: 'cool',     name: 'カーボン・スチール',    desc: '炭素繊維／鋼×翠青',     colors: ['#1E2126','#6BB8D6','#08090c','#E1EBF2'] },
+  { id: 'slate',      cat: 'cool',     name: 'スレート・ミニマル',    desc: '石板／灰×黄銅',         colors: ['#2B2F35','#B8936A','#0d0f12','#EFE9DE'] },
+  { id: 'arctic',     cat: 'cool',     name: 'アークティック・サファイア', desc: '極夜／深青×氷',     colors: ['#0C1B2E','#4A90C0','#020611','#EAF2FB'] },
+  { id: 'platinum',   cat: 'cool',     name: 'プラチナム・オブシディアン', desc: '黒曜石／白金×墨',   colors: ['#0E0E10','#BEC2C9','#050505','#F1F3F6'] },
+  { id: 'lapis',      cat: 'cool',     name: 'アイス・ラピス',        desc: '氷塊×群青／北欧',       colors: ['#0A1F3D','#7FC7D9','#020814','#E4F1F6'] },
+  // NEON
+  { id: 'cyber',      cat: 'neon',     name: 'サイバー・ネオン',      desc: '電脳／マゼンタ×シアン', colors: ['#FF2E8A','#00D9E8','#050A1F','#F4EFE0'] },
+  { id: 'tokyo',      cat: 'neon',     name: 'ネオン・トウキョウ',    desc: '渋谷の夜／紫×桃×空',    colors: ['#2B0B4F','#FF4FA8','#08031a','#F0E6FF'] },
 ];
 const THEME_KEY = 'sa-theme';
 
@@ -2451,15 +2538,30 @@ function showToast(msg) {
 function buildThemeGrid() {
   const grid = document.getElementById('themeGrid');
   if (!grid) return;
-  grid.innerHTML = THEMES.map(t => `
-    <button class="theme-card" data-theme="${t.id}">
-      <div class="theme-card-swatches">
-        ${t.colors.map(c => `<span style="background:${c}"></span>`).join('')}
+  grid.innerHTML = THEME_CATEGORIES.map(cat => {
+    const items = THEMES.filter(t => t.cat === cat.id);
+    if (!items.length) return '';
+    return `
+      <div class="theme-group">
+        <div class="theme-group-head">
+          <span class="theme-group-icon">${cat.icon}</span>
+          <span class="theme-group-title">${cat.title}</span>
+          <span class="theme-group-sub">${cat.sub}</span>
+        </div>
+        <div class="theme-group-body">
+          ${items.map(t => `
+            <button class="theme-card" data-theme="${t.id}">
+              <div class="theme-card-swatches">
+                ${t.colors.map(c => `<span style="background:${c}"></span>`).join('')}
+              </div>
+              <div class="theme-card-name">${t.name}</div>
+              <div class="theme-card-desc">${t.desc}</div>
+            </button>
+          `).join('')}
+        </div>
       </div>
-      <div class="theme-card-name">${t.name}</div>
-      <div class="theme-card-desc">${t.desc}</div>
-    </button>
-  `).join('');
+    `;
+  }).join('');
   grid.querySelectorAll('.theme-card').forEach(btn => {
     btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
   });
