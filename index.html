@@ -307,7 +307,7 @@ ul, ol { list-style: none; }
 
 /* Image logo — invert black→white + screen to drop white bg */
 .logo-img {
-  height: 44px;
+  height: 72px;
   width: auto;
   display: block;
   filter: invert(1);
@@ -318,14 +318,17 @@ ul, ol { list-style: none; }
   filter: invert(1) drop-shadow(0 0 6px rgba(201,176,55,0.7));
   transform: scale(1.03);
 }
-.footer-logo .logo-img { height: 60px; }
+.footer-logo .logo-img { height: 110px; }
 .loader-logo-img {
-  height: clamp(80px, 14vw, 160px);
+  height: clamp(120px, 20vw, 240px);
   width: auto;
   display: block;
-  filter: invert(1);
   mix-blend-mode: screen;
   filter: invert(1) drop-shadow(6px 6px 0 rgba(45,27,61,0.6));
+}
+@media (max-width: 768px) {
+  .logo-img { height: 54px; }
+  .footer-logo .logo-img { height: 80px; }
 }
 
 /* Legacy text logo — kept hidden (can be restored if needed) */
