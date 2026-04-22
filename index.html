@@ -84,6 +84,66 @@ body.theme-cyber {
   --black: #050A1F; --black-soft: #0b1432; --gray: #1a2548;
   --off-white: #F4EFE0; --yellow: #00D9E8;
 }
+/* 10. Blood Moon */
+body.theme-bloodmoon {
+  --red: #7A0C2E; --red-dark: #4f061c; --red-glow: #b32048;
+  --black: #0A0505; --black-soft: #16090a; --gray: #2a1418;
+  --off-white: #F5E4D0; --yellow: #E86A1A;
+}
+/* 11. Abyss Teal */
+body.theme-abyss {
+  --red: #0D4F5C; --red-dark: #073840; --red-glow: #1b7889;
+  --black: #040e12; --black-soft: #0a1a1f; --gray: #16303a;
+  --off-white: #E6EEF0; --yellow: #C0C5CE;
+}
+/* 12. Amethyst Veil */
+body.theme-amethyst {
+  --red: #5B3A8A; --red-dark: #3f285f; --red-glow: #7d56b3;
+  --black: #0F0A1A; --black-soft: #1a1230; --gray: #2d2047;
+  --off-white: #F0E6F5; --yellow: #D4C1E8;
+}
+/* 13. Hemoglobin */
+body.theme-hemoglobin {
+  --red: #A0152A; --red-dark: #6e0e1c; --red-glow: #d12e46;
+  --black: #1a0608; --black-soft: #260a0d; --gray: #3a1418;
+  --off-white: #E8EEF4; --yellow: #F5F8FC;
+}
+/* 14. Onyx Gold */
+body.theme-onyx {
+  --red: #1a1a1a; --red-dark: #000000; --red-glow: #333333;
+  --black: #000000; --black-soft: #0c0c0c; --gray: #1f1f1f;
+  --off-white: #F5EBC0; --yellow: #D4AF37;
+}
+/* 15. Iron Rust */
+body.theme-rust {
+  --red: #5C3A2E; --red-dark: #3e2419; --red-glow: #80594a;
+  --black: #1a120d; --black-soft: #261c16; --gray: #3a2b22;
+  --off-white: #EFE0CE; --yellow: #B8763F;
+}
+/* 16. Forest Witch */
+body.theme-forest {
+  --red: #1F3A2E; --red-dark: #10241c; --red-glow: #305c4a;
+  --black: #0a120d; --black-soft: #121d17; --gray: #1d2f24;
+  --off-white: #E8DFCB; --yellow: #D9A96A;
+}
+/* 17. Paper Noir */
+body.theme-paper {
+  --red: #5a4a2d; --red-dark: #3d3020; --red-glow: #86734a;
+  --black: #2B2419; --black-soft: #1f1a11; --gray: #3a3124;
+  --off-white: #F2EBD5; --yellow: #D8B35A;
+}
+/* 18. Neon Tokyo */
+body.theme-tokyo {
+  --red: #2B0B4F; --red-dark: #1a0732; --red-glow: #4d1a87;
+  --black: #08031a; --black-soft: #120728; --gray: #241141;
+  --off-white: #F0E6FF; --yellow: #FF4FA8;
+}
+/* 19. Ice Lapis */
+body.theme-lapis {
+  --red: #0A1F3D; --red-dark: #051127; --red-glow: #1a3c70;
+  --black: #020814; --black-soft: #071224; --gray: #132439;
+  --off-white: #E4F1F6; --yellow: #7FC7D9;
+}
 
 /* ============================================
    THEME PANEL
@@ -2354,7 +2414,17 @@ const THEMES = [
   { id: 'wafu',     name: '和風ミステリー',       desc: '時代劇／朱×金茶×藍墨', colors: ['#C8102E','#E8C15F','#1B2631','#F4EFE0'] },
   { id: 'sakura',   name: 'サクラ・ブラッド',     desc: '妖艶／桜紅×淡桜',       colors: ['#8B1A3B','#F5C6D0','#1A0E14','#F5E6DC'] },
   { id: 'mono',     name: 'モノクローム・アサシン', desc: '反転／血紅×生成り',    colors: ['#B91C1C','#1C1C1C','#F5F1E8','#E5E5E5'] },
-  { id: 'cyber',    name: 'サイバー・ネオン',     desc: '電脳／マゼンタ×シアン', colors: ['#FF2E8A','#00D9E8','#050A1F','#F4EFE0'] },
+  { id: 'cyber',      name: 'サイバー・ネオン',      desc: '電脳／マゼンタ×シアン',  colors: ['#FF2E8A','#00D9E8','#050A1F','#F4EFE0'] },
+  { id: 'bloodmoon',  name: 'ブラッド・ムーン',      desc: '夜の血月／深紅×橙',       colors: ['#7A0C2E','#E86A1A','#0A0505','#F5E4D0'] },
+  { id: 'abyss',      name: 'アビス・ティール',      desc: '深海の神秘／青緑×銀',     colors: ['#0D4F5C','#C0C5CE','#040e12','#E6EEF0'] },
+  { id: 'amethyst',   name: 'アメジスト・ヴェール',  desc: '妖しい紫水晶／紫×銀',     colors: ['#5B3A8A','#D4C1E8','#0F0A1A','#F0E6F5'] },
+  { id: 'hemoglobin', name: 'ヘモグロビン',          desc: 'クライム／血赤×氷白',     colors: ['#A0152A','#F5F8FC','#1a0608','#E8EEF4'] },
+  { id: 'onyx',       name: 'オニキス・ゴールド',    desc: '黒耀石と純金／高級',      colors: ['#000000','#D4AF37','#0c0c0c','#F5EBC0'] },
+  { id: 'rust',       name: 'アイアン・ラスト',      desc: '錆と鉄／工業ホラー',      colors: ['#5C3A2E','#B8763F','#1a120d','#EFE0CE'] },
+  { id: 'forest',     name: 'フォレスト・ウィッチ',  desc: '森の魔女／苔緑×琥珀',     colors: ['#1F3A2E','#D9A96A','#0a120d','#E8DFCB'] },
+  { id: 'paper',      name: 'ペーパー・ノワール',    desc: '古書×インク／探偵',       colors: ['#5a4a2d','#D8B35A','#2B2419','#F2EBD5'] },
+  { id: 'tokyo',      name: 'ネオン・トウキョウ',    desc: '渋谷の夜／紫×桃×空',      colors: ['#2B0B4F','#FF4FA8','#08031a','#F0E6FF'] },
+  { id: 'lapis',      name: 'アイス・ラピス',        desc: '氷塊×群青／北欧',         colors: ['#0A1F3D','#7FC7D9','#020814','#E4F1F6'] },
 ];
 const THEME_KEY = 'sa-theme';
 
