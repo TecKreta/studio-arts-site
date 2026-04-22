@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>STUDIO ARTS｜スタジオアーツ 公式サイト</title>
-<meta name="description" content="マーダーミステリー制作チーム『STUDIO ARTS』公式サイト。役を、生きろ。">
+<meta name="description" content="マーダーミステリー制作チーム『STUDIO ARTS』公式サイト。物語を、奪え。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@500;700&family=Shippori+Mincho+B1:wght@700;800&family=RocknRoll+One&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
@@ -1632,45 +1632,65 @@ ul, ol { list-style: none; }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Section head — B(line sweep) + E(glitch flicker) */
+/* Section head — B(3-line sweep) + E(glitch flicker) */
 .section-head { position: relative; }
-/* Sweep line (B) */
-.section-head.reveal::before {
-  content: "";
+/* 3 lines — injected via JS. mix-blend-mode: difference keeps contrast on any bg */
+.sh-line {
   position: absolute;
-  top: 50%; left: -10%;
+  left: -10%;
   width: 120%; height: 2px;
-  background: var(--yellow);
-  box-shadow: 0 0 10px rgba(201,176,55,0.6);
+  background: #f0d060;
   opacity: 0;
-  transform: rotate(-6deg) translateX(-120%);
-  z-index: 2;
+  mix-blend-mode: difference;
   pointer-events: none;
+  z-index: 2;
+  will-change: transform, opacity;
 }
-.section-head.reveal.visible::before {
-  animation: headLineSweep 0.75s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+.sh-line-1 { top: 28%; }
+.sh-line-2 { top: 50%; height: 2.5px; }
+.sh-line-3 { top: 72%; }
+.section-head.reveal.visible .sh-line-1 {
+  animation: shLine1 0.7s 0s cubic-bezier(0.77,0,0.18,1) forwards;
 }
-@keyframes headLineSweep {
-  0%   { opacity: 0; transform: rotate(-6deg) translateX(-120%); }
-  20%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { opacity: 0; transform: rotate(-6deg) translateX(120%); }
+.section-head.reveal.visible .sh-line-2 {
+  animation: shLine2 0.75s 0.1s cubic-bezier(0.77,0,0.18,1) forwards;
 }
-/* Residual stub (B) — small line left as accent */
+.section-head.reveal.visible .sh-line-3 {
+  animation: shLine3 0.7s 0.22s cubic-bezier(0.77,0,0.18,1) forwards;
+}
+@keyframes shLine1 {
+  0%   { opacity: 0; transform: rotate(-10deg) translateX(-120%); }
+  25%  { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; transform: rotate(-10deg) translateX(120%); }
+}
+@keyframes shLine2 {
+  0%   { opacity: 0; transform: rotate(-4deg) translateX(-120%); }
+  25%  { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; transform: rotate(-4deg) translateX(120%); }
+}
+@keyframes shLine3 {
+  0%   { opacity: 0; transform: rotate(-13deg) translateX(130%); }
+  25%  { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; transform: rotate(-13deg) translateX(-130%); }
+}
+/* Residual stub after sweep */
 .section-head.reveal::after {
   content: "";
   position: absolute;
   top: 50%; left: -40px;
   width: 36px; height: 2px;
-  background: var(--yellow);
-  box-shadow: 0 0 8px rgba(201,176,55,0.5);
+  background: #f0d060;
+  mix-blend-mode: difference;
   opacity: 0;
-  transform: rotate(-6deg);
+  transform: rotate(-4deg);
   pointer-events: none;
   z-index: 1;
 }
 .section-head.reveal.visible::after {
-  animation: headLineRest 0.4s 0.75s forwards;
+  animation: headLineRest 0.4s 0.95s forwards;
 }
 @keyframes headLineRest {
   from { opacity: 0; }
@@ -1770,7 +1790,7 @@ ul, ol { list-style: none; }
 .cursor-blend {
   z-index: 10000;
   width: 50px; height: 50px;
-  background: var(--off-white);
+  background: #fff;
   border-radius: 50%;
   mix-blend-mode: difference;
   transition: opacity 0.25s, width 0.3s cubic-bezier(0.2,0.9,0.2,1),
@@ -1779,9 +1799,10 @@ ul, ol { list-style: none; }
 .cursor-ring {
   z-index: 10001;
   width: 36px; height: 36px;
-  border: 1.5px solid var(--yellow);
+  border: 1.5px solid #f0d060;
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(201, 176, 55, 0.35);
+  background: transparent;
+  mix-blend-mode: difference;
   transition: opacity 0.25s, width 0.3s cubic-bezier(0.2,0.9,0.2,1),
               height 0.3s cubic-bezier(0.2,0.9,0.2,1),
               background 0.25s, border-color 0.25s;
@@ -1789,9 +1810,9 @@ ul, ol { list-style: none; }
 .cursor-dot {
   z-index: 10002;
   width: 8px; height: 8px;
-  background: var(--yellow);
+  background: #f0d060;
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--yellow);
+  mix-blend-mode: difference;
   transition: opacity 0.2s, width 0.2s, height 0.2s;
 }
 html.has-cursor .cursor-blend,
@@ -1802,8 +1823,8 @@ html.has-cursor .cursor-dot { opacity: 1; }
 html.cursor-hover .cursor-blend { width: 100px; height: 100px; }
 html.cursor-hover .cursor-ring  {
   width: 80px; height: 80px;
-  background: rgba(201, 176, 55, 0.18);
-  border-color: var(--yellow);
+  background: rgba(240, 208, 96, 0.35);
+  border-color: #f0d060;
 }
 html.cursor-hover .cursor-dot { width: 6px; height: 6px; }
 
@@ -2265,6 +2286,15 @@ const revealTargets = document.querySelectorAll(
   '.work-card, .pillar-card, .member-card, .members-note-panel, .news-item, .sns-card, .section-head, .about-text'
 );
 revealTargets.forEach(el => el.classList.add('reveal'));
+
+// Inject 3 sweep lines into each .section-head
+document.querySelectorAll('.section-head').forEach(h => {
+  for (let i = 1; i <= 3; i++) {
+    const s = document.createElement('span');
+    s.className = 'sh-line sh-line-' + i;
+    h.prepend(s);
+  }
+});
 
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => {
