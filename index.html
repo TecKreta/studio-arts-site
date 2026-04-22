@@ -305,23 +305,31 @@ ul, ol { list-style: none; }
   gap: 12px;
 }
 
-.logo-mark {
-  font-family: var(--font-display);
-  font-size: 32px;
-  color: var(--red);
-  font-style: italic;
-  letter-spacing: -0.02em;
-  text-shadow: 2px 2px 0 var(--black);
+/* Image logo — invert black→white + screen to drop white bg */
+.logo-img {
+  height: 44px;
+  width: auto;
+  display: block;
+  filter: invert(1);
+  mix-blend-mode: screen;
+  transition: filter 0.3s, transform 0.3s;
 }
-.logo-mark em { color: var(--off-white); font-style: italic; }
+.nav-logo:hover .logo-img {
+  filter: invert(1) drop-shadow(0 0 6px rgba(201,176,55,0.7));
+  transform: scale(1.03);
+}
+.footer-logo .logo-img { height: 60px; }
+.loader-logo-img {
+  height: clamp(80px, 14vw, 160px);
+  width: auto;
+  display: block;
+  filter: invert(1);
+  mix-blend-mode: screen;
+  filter: invert(1) drop-shadow(6px 6px 0 rgba(45,27,61,0.6));
+}
 
-.logo-sub {
-  font-family: var(--font-en);
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  color: var(--off-white);
-  font-weight: 700;
-}
+/* Legacy text logo — kept hidden (can be restored if needed) */
+.logo-mark, .logo-sub { display: none; }
 
 .nav-list {
   display: flex;
@@ -1845,7 +1853,7 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
   <div class="loader-stripe loader-stripe-1"><span>STUDIO ARTS</span><span>★</span><span>LIVE YOUR ROLE</span><span>★</span><span>STUDIO ARTS</span><span>★</span><span>LIVE YOUR ROLE</span><span>★</span></div>
   <div class="loader-stripe loader-stripe-2"><span>役を、生きろ。</span><span>◆</span><span>MURDER MYSTERY</span><span>◆</span><span>役を、生きろ。</span><span>◆</span><span>MURDER MYSTERY</span><span>◆</span></div>
   <div class="loader-center">
-    <div class="loader-logo"><span>S</span><em>/</em><span>A</span></div>
+    <img class="loader-logo-img" src="images/logo.png" alt="STUDIO ARTS">
     <div class="loader-bar"><div class="loader-bar-fill"></div></div>
     <div class="loader-txt">NOW LOADING<span class="loader-dots"></span></div>
   </div>
@@ -1877,8 +1885,7 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-logo">
-    <span class="logo-mark">S<em>/</em>A</span>
-    <span class="logo-sub">STUDIO ARTS</span>
+    <img class="logo-img" src="images/logo.png" alt="STUDIO ARTS">
   </div>
   <ul class="nav-list">
     <li><a href="#about" data-num="01">ABOUT</a></li>
@@ -2268,8 +2275,7 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
   <div class="footer-bg-shape"></div>
   <div class="footer-inner">
     <div class="footer-logo">
-      <span class="logo-mark">S<em>/</em>A</span>
-      <span class="logo-sub">STUDIO ARTS</span>
+      <img class="logo-img" src="images/logo.png" alt="STUDIO ARTS">
     </div>
     <p class="footer-tagline">役を、生きろ。 — LIVE YOUR ROLE.</p>
     <p class="footer-copy">© 2024-2026 STUDIO ARTS. ALL RIGHTS RESERVED.</p>
