@@ -1884,13 +1884,15 @@ ul, ol { list-style: none; }
   box-shadow: 16px 16px 0 rgba(201, 176, 55, 0.35);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   border-color: transparent;
+  overflow: visible;
+  z-index: 10;
 }
 .member-card:hover::before,
 .member-card:hover::after { opacity: 0; }
 
 /* ===== Member hover reveal — Split layout (bio L / photo R) + P5 bands ===== */
 .member-reveal{
-  position:absolute;inset:-3px;z-index:5;pointer-events:none;
+  position:absolute;inset:-8px;z-index:5;pointer-events:none;
   opacity:0;
   transform:translateX(-4%);
   transition:opacity .35s ease, transform .5s cubic-bezier(.3,1.2,.5,1), clip-path .5s cubic-bezier(.7,.05,.2,1);
@@ -1955,27 +1957,28 @@ ul, ol { list-style: none; }
 }
 
 .member-topband,.member-botband{
-  position:absolute;left:-3px;right:-3px;height:36px;z-index:7;
+  position:absolute;left:-24px;right:-24px;height:40px;z-index:7;
   display:flex;align-items:center;
   font-family:var(--font-display);letter-spacing:.3em;font-weight:900;
-  font-size:13px;
+  font-size:14px;
   transition:transform .38s cubic-bezier(.7,.05,.2,1);
   pointer-events:none;
 }
 .member-topband{
-  top:-3px;padding:0 20px;
+  top:-14px;padding:0 32px;
   background:var(--red);color:var(--off-white);
-  transform:translateY(-120%) skewY(-2deg);
+  transform:translateY(-130%) skewY(-2deg);
   justify-content:flex-start;
   text-shadow:2px 2px 0 var(--black-soft);
-  box-shadow:0 4px 0 var(--black-soft);
+  box-shadow:0 6px 0 var(--black-soft), 8px 10px 18px rgba(0,0,0,0.5);
 }
 .member-botband{
-  bottom:-3px;padding:0 28px 0 20px;
+  bottom:-14px;padding:0 34px 0 32px;
   background:var(--black);color:var(--yellow);
-  transform:translateY(120%) skewY(-2deg);
+  transform:translateY(130%) skewY(-2deg);
   justify-content:space-between;
   border-top:2px solid var(--red);
+  box-shadow:0 -6px 0 var(--red-dark), 8px 10px 18px rgba(0,0,0,0.5);
 }
 .member-botband .jp{font-family:var(--font-sans);letter-spacing:.18em;font-size:13px;color:var(--off-white)}
 .member-botband .en{color:var(--yellow)}
