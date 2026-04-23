@@ -1900,16 +1900,35 @@ ul, ol { list-style: none; }
     12px 12px 0 var(--red),
     22px 22px 0 var(--black-soft),
     28px 28px 32px rgba(0,0,0,.5);
-  display:flex;
 }
-.member-card:hover .member-reveal{
+/* Per-card tilt variation (alternating mirror) */
+.member-card:nth-child(odd):hover .member-reveal{
   opacity:1;
   transform:translate(-6px,-6px) rotate(-2.5deg) scale(1);
+}
+.member-card:nth-child(even):hover .member-reveal{
+  opacity:1;
+  transform:translate(6px,-6px) rotate(2.5deg) scale(1);
+  box-shadow:
+    -12px 12px 0 var(--red),
+    -22px 22px 0 var(--black-soft),
+    -28px 28px 32px rgba(0,0,0,.5);
+}
+
+/* Inner content wrapper — clip-path wipe from left */
+.member-reveal-body{
+  position:absolute;
+  top:44px;left:0;right:0;bottom:44px;
+  display:flex;
+  clip-path:polygon(0 0, 0 0, 0 100%, 0 100%);
+  transition:clip-path .6s cubic-bezier(.2,.9,.2,1) .18s;
+}
+.member-card:hover .member-reveal-body{
+  clip-path:polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 .member-photo{
   position:relative;
   flex:0 0 52%;
-  order:2;
   background-size:cover;background-position:center;
   background-color:var(--red-dark);
   filter:contrast(1.15) saturate(1.1);
@@ -1940,15 +1959,11 @@ ul, ol { list-style: none; }
 
 .member-bio{
   flex:1 1 auto;
-  order:1;
   position:relative;z-index:3;
-  padding: 54px 14px 48px 22px;
+  padding: 18px 14px 18px 22px;
   display:flex;align-items:center;
   color:var(--off-white);
-  opacity:0;transform:translateY(10px);
-  transition:opacity .3s .2s, transform .35s .2s;
 }
-.member-card:hover .member-bio{opacity:1;transform:translateY(0)}
 .member-bio .txt{
   font-size:13px;line-height:1.9;
   color:var(--off-white);
@@ -2264,11 +2279,11 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
       <p>緻密な仕掛けの向こうで、物語の輪郭を研ぎ澄ます。</p>
       <div class="member-reveal">
         <div class="member-topband">PROFILE / 01</div>
-        <div class="member-photo" data-initial="T"></div>
-        <div class="member-halftone"></div>
-        <div class="member-bio">
-          <div class="txt">構造の緻密さと演出のキレ。頭脳派の視点で物語を組み上げる。</div>
+        <div class="member-reveal-body">
+          <div class="member-bio"><div class="txt">構造の緻密さと演出のキレ。頭脳派の視点で物語を組み上げる。</div></div>
+          <div class="member-photo" data-initial="T"></div>
         </div>
+        <div class="member-halftone"></div>
         <div class="member-botband"><span class="en">TECK</span></div>
       </div>
     </article>
@@ -2279,11 +2294,11 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
       <p>熱量と遊び心で、盤上にドラマの火花を散らす。</p>
       <div class="member-reveal">
         <div class="member-topband">PROFILE / 02</div>
-        <div class="member-photo" data-initial="J"></div>
-        <div class="member-halftone"></div>
-        <div class="member-bio">
-          <div class="txt">熱量と遊び心。盤上のテンポを上げる推進役、ドラマの火花を散らす。</div>
+        <div class="member-reveal-body">
+          <div class="member-bio"><div class="txt">熱量と遊び心。盤上のテンポを上げる推進役、ドラマの火花を散らす。</div></div>
+          <div class="member-photo" data-initial="J"></div>
         </div>
+        <div class="member-halftone"></div>
         <div class="member-botband"><span class="en">JINSOTSU</span></div>
       </div>
     </article>
@@ -2294,11 +2309,11 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
       <p>やわらかな感性で、余韻の残る情景を編み上げる。</p>
       <div class="member-reveal">
         <div class="member-topband">PROFILE / 03</div>
-        <div class="member-photo" data-initial="N"></div>
-        <div class="member-halftone"></div>
-        <div class="member-bio">
-          <div class="txt">やわらかな感性で、余韻の残る情景を編み上げる。情動の奥行きが魅力。</div>
+        <div class="member-reveal-body">
+          <div class="member-bio"><div class="txt">やわらかな感性で、余韻の残る情景を編み上げる。情動の奥行きが魅力。</div></div>
+          <div class="member-photo" data-initial="N"></div>
         </div>
+        <div class="member-halftone"></div>
         <div class="member-botband"><span class="en">NAMISOTAN</span></div>
       </div>
     </article>
@@ -2309,11 +2324,11 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
       <p>静かな視線で、物語の芯にある感情を掬い上げる。</p>
       <div class="member-reveal">
         <div class="member-topband">PROFILE / 04</div>
-        <div class="member-photo" data-initial="M"></div>
-        <div class="member-halftone"></div>
-        <div class="member-bio">
-          <div class="txt">静かな視線で、物語の芯にある感情を掬い上げる。研ぎ澄まされた観察眼。</div>
+        <div class="member-reveal-body">
+          <div class="member-bio"><div class="txt">静かな視線で、物語の芯にある感情を掬い上げる。研ぎ澄まされた観察眼。</div></div>
+          <div class="member-photo" data-initial="M"></div>
         </div>
+        <div class="member-halftone"></div>
         <div class="member-botband"><span class="en">MIYA</span></div>
       </div>
     </article>
