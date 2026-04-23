@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Member Card Hover — Animation Preview</title>
+<style>
+:root{
+  --bg:#0D0B10; --ink:#E5DBC9; --gold:#C9B037; --red:#B91C1C; --violet:#2D1B3D;
+  --font-en:'Bebas Neue','Oswald',sans-serif;
+  --font-jp:'Noto Sans JP',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--font-jp);
+  min-height:100vh;padding:48px 32px 120px;
+}
+h1{font-family:var(--font-en);letter-spacing:.15em;font-size:34px;color:var(--gold);margin-bottom:8px}
+.lead{color:rgba(229,219,201,.7);margin-bottom:48px;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:36px}
+.demo{display:flex;flex-direction:column;gap:12px}
+.demo-label{
+  font-family:var(--font-en);letter-spacing:.2em;color:var(--gold);font-size:13px;
+  display:flex;align-items:baseline;gap:12px;
+}
+.demo-label b{color:var(--ink);font-size:17px}
+.demo-desc{font-size:12px;color:rgba(229,219,201,.6);margin-top:-6px}
+.stage{
+  position:relative;height:360px;border:1px solid rgba(201,176,55,.3);
+  background:linear-gradient(135deg,#140f18,#0a0810);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.card{
+  position:relative;width:240px;height:300px;
+  border:1px solid rgba(201,176,55,.4);
+  background:#140f18;
+  padding:22px 20px;display:flex;flex-direction:column;justify-content:flex-end;
+  cursor:pointer;transition:transform .4s cubic-bezier(.2,.9,.2,1),box-shadow .4s;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 50px rgba(201,176,55,.2)}
+.card h3{font-family:var(--font-jp);font-size:22px;color:var(--ink);margin-bottom:6px;font-weight:700}
+.card p{font-size:12px;color:rgba(229,219,201,.7);line-height:1.6}
+.card .no{
+  position:absolute;top:12px;left:14px;font-family:var(--font-en);
+  color:var(--gold);opacity:.35;font-size:14px;letter-spacing:.15em;
+}
+
+/* Reveal overlay shared */
+.reveal-layer{
+  position:absolute;inset:0;overflow:hidden;
+  pointer-events:none;opacity:0;
+}
+.reveal-layer .img{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1509909756405-be0199881695?w=600');
+  background-size:cover;background-position:center;
+  filter:grayscale(.2) contrast(1.1);
+}
+.reveal-layer .img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,8,14,.95) 0%,rgba(10,8,14,.35) 50%,rgba(10,8,14,.1) 100%);
+}
+.reveal-layer .bio{
+  position:absolute;left:20px;right:20px;bottom:20px;z-index:2;
+}
+.reveal-layer .bio h4{
+  font-family:var(--font-en);letter-spacing:.2em;color:var(--gold);
+  font-size:11px;margin-bottom:6px;
+}
+.reveal-layer .bio .name{font-size:18px;font-weight:700;color:#fff;margin-bottom:8px}
+.reveal-layer .bio .txt{font-size:11px;line-height:1.6;color:rgba(255,255,255,.85)}
+
+/* ============ A. GLITCH HOLOGRAM (top-left → bottom-right) ============ */
+.a .reveal-layer{
+  clip-path:polygon(0 0,0 0,0 0,0 0);
+  opacity:1;
+  transition:clip-path .7s cubic-bezier(.7,.05,.2,1);
+}
+.a:hover .reveal-layer{
+  clip-path:polygon(0 0,100% 0,100% 100%,0 100%);
+  animation:glitchJitter .7s steps(6);
+}
+.a .reveal-layer .img{
+  filter:grayscale(.2) contrast(1.15) hue-rotate(0deg);
+}
+.a:hover .reveal-layer .img{animation:rgbSplit .6s steps(5)}
+.a .reveal-layer::before{
+  content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:repeating-linear-gradient(
+    to bottom,
+    transparent 0 2px,
+    rgba(0,255,220,.06) 2px 3px,
+    transparent 3px 5px
+  );
+  mix-blend-mode:screen;
+}
+.a .reveal-layer::after{
+  content:'';position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:linear-gradient(120deg,transparent 40%,rgba(201,176,55,.18) 50%,transparent 60%);
+  opacity:0;
+}
+.a:hover .reveal-layer::after{animation:scanSweep .7s linear}
+@keyframes glitchJitter{
+  0%{transform:translate(0)}
+  20%{transform:translate(-3px,2px)}
+  40%{transform:translate(2px,-1px)}
+  60%{transform:translate(-1px,3px)}
+  80%{transform:translate(3px,0)}
+  100%{transform:translate(0)}
+}
+@keyframes rgbSplit{
+  0%{filter:grayscale(.2) contrast(1.15)}
+  20%{filter:grayscale(.2) contrast(1.15) hue-rotate(25deg) saturate(1.8)}
+  40%{filter:grayscale(.2) contrast(1.15) hue-rotate(-15deg)}
+  60%{filter:grayscale(.2) contrast(1.15) hue-rotate(10deg) saturate(1.4)}
+  100%{filter:grayscale(.2) contrast(1.15)}
+}
+@keyframes scanSweep{
+  0%{opacity:0;transform:translateX(-100%)}
+  40%{opacity:1}
+  100%{opacity:0;transform:translateX(100%)}
+}
+.a .card:hover h3,.a .card:hover p,.a .card:hover .no{opacity:0;transition:opacity .2s}
+
+/* ============ B. VERTICAL BLINDS ============ */
+.b .reveal-layer{opacity:1;display:grid;grid-template-columns:repeat(6,1fr)}
+.b .reveal-layer .slat{
+  position:relative;overflow:hidden;
+  transform:scaleY(0);transform-origin:top;
+  transition:transform .55s cubic-bezier(.7,.05,.2,1);
+}
+.b .reveal-layer .slat .img{
+  position:absolute;inset:0;width:600%;
+  background-image:url('https://images.unsplash.com/photo-1509909756405-be0199881695?w=600');
+  background-size:cover;background-position:center;
+  filter:grayscale(.2) contrast(1.1);
+}
+.b .reveal-layer .slat:nth-child(1) .img{left:0}
+.b .reveal-layer .slat:nth-child(2) .img{left:-100%}
+.b .reveal-layer .slat:nth-child(3) .img{left:-200%}
+.b .reveal-layer .slat:nth-child(4) .img{left:-300%}
+.b .reveal-layer .slat:nth-child(5) .img{left:-400%}
+.b .reveal-layer .slat:nth-child(6) .img{left:-500%}
+.b:hover .reveal-layer .slat{transform:scaleY(1)}
+.b:hover .reveal-layer .slat:nth-child(1){transition-delay:0s}
+.b:hover .reveal-layer .slat:nth-child(2){transition-delay:.05s}
+.b:hover .reveal-layer .slat:nth-child(3){transition-delay:.1s}
+.b:hover .reveal-layer .slat:nth-child(4){transition-delay:.15s}
+.b:hover .reveal-layer .slat:nth-child(5){transition-delay:.2s}
+.b:hover .reveal-layer .slat:nth-child(6){transition-delay:.25s}
+.b .card:hover h3,.b .card:hover p,.b .card:hover .no{opacity:0;transition:opacity .3s .3s}
+
+/* ============ C. 3D CARD FLIP ============ */
+.c .card{perspective:1200px;padding:0;background:transparent;border:none}
+.c .card-inner{
+  position:relative;width:100%;height:100%;
+  transition:transform .7s cubic-bezier(.6,.05,.2,1);
+  transform-style:preserve-3d;
+}
+.c .card:hover .card-inner{transform:rotateY(180deg)}
+.c .front,.c .back{
+  position:absolute;inset:0;backface-visibility:hidden;
+  border:1px solid rgba(201,176,55,.4);background:#140f18;
+  padding:22px 20px;
+}
+.c .front{display:flex;flex-direction:column;justify-content:flex-end}
+.c .back{transform:rotateY(180deg);overflow:hidden}
+.c .back .img{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1509909756405-be0199881695?w=600');
+  background-size:cover;background-position:center;
+  filter:grayscale(.2) contrast(1.1);
+}
+.c .back .img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,8,14,.95),rgba(10,8,14,.2));
+}
+.c .back .bio{position:absolute;left:20px;right:20px;bottom:20px;z-index:2}
+.c .back .bio h4{font-family:var(--font-en);letter-spacing:.2em;color:var(--gold);font-size:11px;margin-bottom:6px}
+.c .back .bio .name{font-size:18px;font-weight:700;color:#fff;margin-bottom:8px}
+.c .back .bio .txt{font-size:11px;line-height:1.6;color:rgba(255,255,255,.85)}
+
+/* ============ D. DIAGONAL SWIPE ============ */
+.d .reveal-layer{
+  opacity:1;
+  clip-path:polygon(-20% 0,-20% 0,-20% 0,-20% 0);
+  transition:clip-path .6s cubic-bezier(.7,.05,.2,1);
+}
+.d:hover .reveal-layer{
+  clip-path:polygon(-20% 0,120% 0,120% 100%,-20% 100%);
+}
+.d .reveal-layer::before{
+  content:'';position:absolute;top:0;bottom:0;width:40px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  left:-60px;z-index:5;opacity:0;transform:skewX(-20deg);
+}
+.d:hover .reveal-layer::before{animation:diagSweep .6s}
+@keyframes diagSweep{
+  0%{left:-60px;opacity:1}
+  100%{left:calc(100% + 60px);opacity:0}
+}
+.d .card:hover h3,.d .card:hover p,.d .card:hover .no{opacity:0;transition:opacity .2s}
+
+/* ============ E. PIXEL MOSAIC DISSOLVE ============ */
+.e .reveal-layer{opacity:1}
+.e .reveal-layer .img{
+  opacity:0;
+  mask-image:
+    radial-gradient(circle at 10% 10%,#000 2px,transparent 3px),
+    radial-gradient(circle at 30% 20%,#000 2px,transparent 3px),
+    radial-gradient(circle at 70% 15%,#000 2px,transparent 3px),
+    radial-gradient(circle at 90% 40%,#000 2px,transparent 3px);
+  mask-size:14px 14px;
+  transition:opacity .6s;
+}
+.e:hover .reveal-layer .img{
+  opacity:1;
+  animation:pixelDissolve .65s steps(8) forwards;
+}
+@keyframes pixelDissolve{
+  0%{mask-size:2px 2px}
+  100%{mask-size:100% 100%}
+}
+.e .reveal-layer::before{
+  content:'';position:absolute;inset:0;z-index:3;
+  background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(201,176,55,.1) 0deg 2deg,transparent 2deg 8deg);
+  opacity:0;mix-blend-mode:overlay;
+}
+.e:hover .reveal-layer::before{animation:flickerIn .6s}
+@keyframes flickerIn{
+  0%,20%,40%{opacity:0}
+  10%,30%,50%{opacity:1}
+  100%{opacity:0}
+}
+.e .card:hover h3,.e .card:hover p,.e .card:hover .no{opacity:0;transition:opacity .2s}
+
+/* ============ F. ZOOM CROSSFADE ============ */
+.f .reveal-layer{
+  opacity:0;transform:scale(1.15);
+  transition:opacity .5s ease,transform .7s cubic-bezier(.2,.9,.2,1);
+}
+.f:hover .reveal-layer{opacity:1;transform:scale(1)}
+.f .card:hover h3,.f .card:hover p,.f .card:hover .no{opacity:0;transition:opacity .35s}
+.f .reveal-layer::after{
+  content:'';position:absolute;inset:0;border:1px solid var(--gold);
+  opacity:0;transform:scale(.92);
+  transition:opacity .4s .15s,transform .4s .15s;
+  z-index:3;pointer-events:none;
+}
+.f:hover .reveal-layer::after{opacity:.7;transform:scale(1)}
+
+/* ============ Shared hiding ============ */
+.card > h3,.card > p,.card > .no{transition:opacity .3s;position:relative;z-index:1}
+</style>
+</head>
+<body>
+
+<h1>MEMBER CARD — HOVER ANIMATIONS</h1>
+<p class="lead">各カードにマウスを乗せて動きを確認してください。Aはグリッチ・ホログラム（必須）。</p>
+
+<div class="grid">
+
+  <!-- A -->
+  <div class="demo a">
+    <div class="demo-label">A <b>グリッチ・ホログラム</b></div>
+    <div class="demo-desc">左上→右下にクリップパス展開。RGB色ずれ＋走査線＋金色スキャン</div>
+    <div class="stage">
+      <div class="card">
+        <span class="no">01</span>
+        <h3>てっく</h3>
+        <p>緻密な仕掛けの向こうで、物語の輪郭を研ぎ澄ます。</p>
+        <div class="reveal-layer">
+          <div class="img"></div>
+          <div class="bio">
+            <h4>MEMBER / 01</h4>
+            <div class="name">てっく TECK</div>
+            <div class="txt">構造の緻密さと演出のキレ。頭脳派の視点で物語を組み上げる。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="demo b">
+    <div class="demo-label">B <b>縦ブラインド</b></div>
+    <div class="demo-desc">6枚の縦スラットが順にスケール展開（ブラインドが開く）</div>
+    <div class="stage">
+      <div class="card">
+        <span class="no">02</span>
+        <h3>ジンソツ</h3>
+        <p>熱量と遊び心で、盤上にドラマの火花を散らす。</p>
+        <div class="reveal-layer">
+          <div class="slat"><div class="img"></div></div>
+          <div class="slat"><div class="img"></div></div>
+          <div class="slat"><div class="img"></div></div>
+          <div class="slat"><div class="img"></div></div>
+          <div class="slat"><div class="img"></div></div>
+          <div class="slat"><div class="img"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="demo c">
+    <div class="demo-label">C <b>3Dフリップ</b></div>
+    <div class="demo-desc">カード全体がY軸回転して裏面が登場（王道）</div>
+    <div class="stage">
+      <div class="card">
+        <div class="card-inner">
+          <div class="front">
+            <span class="no">03</span>
+            <h3>なみそたん</h3>
+            <p>やわらかな感性で、余韻の残る情景を編み上げる。</p>
+          </div>
+          <div class="back">
+            <div class="img"></div>
+            <div class="bio">
+              <h4>MEMBER / 03</h4>
+              <div class="name">なみそたん NAMISO</div>
+              <div class="txt">情感と余韻。細やかな表現で情景を立ち上げる感性派。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D -->
+  <div class="demo d">
+    <div class="demo-label">D <b>ダイアゴナル・スワイプ</b></div>
+    <div class="demo-desc">左から右へ斜めに拭き取るように表示、金色の光線が追従</div>
+    <div class="stage">
+      <div class="card">
+        <span class="no">04</span>
+        <h3>宮</h3>
+        <p>静かな視線で、物語の芯にある感情を掬い上げる。</p>
+        <div class="reveal-layer">
+          <div class="img"></div>
+          <div class="bio">
+            <h4>MEMBER / 04</h4>
+            <div class="name">宮 MIYA</div>
+            <div class="txt">静けさの奥の情動。研ぎ澄まされた視線で核に迫る。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E -->
+  <div class="demo e">
+    <div class="demo-label">E <b>ピクセル・モザイク</b></div>
+    <div class="demo-desc">細かいピクセルが解像していくように現像、ちらつき付き</div>
+    <div class="stage">
+      <div class="card">
+        <span class="no">05</span>
+        <h3>サンプル</h3>
+        <p>ピクセル・モザイクでカードが現像される演出。</p>
+        <div class="reveal-layer">
+          <div class="img"></div>
+          <div class="bio">
+            <h4>MEMBER / XX</h4>
+            <div class="name">SAMPLE</div>
+            <div class="txt">モザイク解像。ノイズ混じりのフィルム的な手触り。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- F -->
+  <div class="demo f">
+    <div class="demo-label">F <b>ズーム・クロスフェード</b></div>
+    <div class="demo-desc">画像が少し引きながらフェードイン、金枠が内側へ締まる</div>
+    <div class="stage">
+      <div class="card">
+        <span class="no">06</span>
+        <h3>サンプル</h3>
+        <p>控えめに上品に切り替わる王道クロスフェード。</p>
+        <div class="reveal-layer">
+          <div class="img"></div>
+          <div class="bio">
+            <h4>MEMBER / XX</h4>
+            <div class="name">SAMPLE</div>
+            <div class="txt">引きのズームと金枠で余韻を残すミニマルな切り替え。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p style="margin-top:60px;color:rgba(229,219,201,.5);font-size:12px">
+  好みの番号（または組み合わせ、例：A＋D）を指定してください。Aにその他の装飾を足す案もOK。
+</p>
+
+</body>
+</html>
