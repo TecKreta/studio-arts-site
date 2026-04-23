@@ -1877,77 +1877,70 @@ ul, ol { list-style: none; }
   box-shadow: 16px 16px 0 rgba(201, 176, 55, 0.35);
 }
 
-/* ===== Member hover reveal — Polaroid Slap + Top/Bot Band (P5) ===== */
+/* ===== Member hover reveal — Split layout (bio L / photo R) + P5 bands ===== */
 .member-reveal{
   position:absolute;inset:0;z-index:2;pointer-events:none;
   opacity:0;
-  transform:translate(-14%,-16%) rotate(-14deg) scale(.5);
-  transition:opacity .25s ease, transform .5s cubic-bezier(.3,1.55,.5,1);
-  border:10px solid var(--off-white);
-  box-shadow: 6px 6px 0 var(--black-soft), 12px 12px 0 var(--red);
+  transform:translateX(-4%);
+  transition:opacity .35s ease, transform .5s cubic-bezier(.3,1.2,.5,1), clip-path .5s cubic-bezier(.7,.05,.2,1);
   overflow:hidden;
-  background:var(--black);
+  background:linear-gradient(135deg, var(--black) 0%, var(--black-soft) 100%);
+  clip-path:polygon(0 0, 0 0, 0 100%, 0 100%);
+  display:flex;
 }
 .member-card:hover .member-reveal{
   opacity:1;
-  transform:translate(0,0) rotate(-2deg) scale(1);
+  transform:translateX(0);
+  clip-path:polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 .member-photo{
-  position:absolute;inset:0;
+  position:relative;
+  flex:0 0 52%;
+  order:2;
   background-size:cover;background-position:center;
   background-color:var(--red-dark);
   filter:contrast(1.15) saturate(1.1);
+  clip-path:polygon(18% 0, 100% 0, 100% 100%, 0 100%);
 }
 .member-photo::before{
   content:attr(data-initial);
   position:absolute;inset:0;
   display:flex;align-items:center;justify-content:center;
   font-family:var(--font-display);font-weight:900;
-  font-size:180px;letter-spacing:-.04em;line-height:1;
-  color:var(--off-white);opacity:.18;
-  text-shadow: 6px 6px 0 var(--black);
+  font-size:200px;letter-spacing:-.04em;line-height:1;
+  color:var(--off-white);opacity:.28;
+  text-shadow: 5px 5px 0 var(--red);
 }
 .member-photo::after{
   content:'';position:absolute;inset:0;
   background:
-    linear-gradient(180deg,transparent 35%,rgba(0,0,0,.85)),
-    linear-gradient(135deg, var(--red-glow) 0%, transparent 60%);
+    linear-gradient(90deg, rgba(0,0,0,.55) 0%, transparent 45%),
+    linear-gradient(135deg, var(--red-glow) 0%, transparent 65%);
   mix-blend-mode:multiply;
 }
 .member-halftone{
-  position:absolute;inset:0;z-index:2;pointer-events:none;
+  position:absolute;inset:0;z-index:3;pointer-events:none;
   background-image:radial-gradient(circle, var(--black) 1px, transparent 1.4px);
   background-size:6px 6px;
-  opacity:.22;mix-blend-mode:multiply;
+  opacity:.18;mix-blend-mode:multiply;
 }
-.member-ransom{
-  position:absolute;top:54px;left:14px;right:14px;z-index:3;
-  display:flex;flex-wrap:wrap;gap:4px;
-  opacity:0;transform:translateY(-18px);
-  transition:opacity .25s .28s, transform .3s .28s;
-}
-.member-card:hover .member-ransom{opacity:1;transform:translateY(0)}
-.member-ransom span{
-  display:inline-block;padding:3px 9px;
-  font-family:var(--font-display);font-weight:900;
-  font-size:15px;line-height:1;letter-spacing:.1em;
-}
-.member-ransom span:nth-child(1){background:var(--red);color:var(--off-white);transform:rotate(-5deg)}
-.member-ransom span:nth-child(2){background:var(--off-white);color:var(--black);transform:rotate(4deg)}
-.member-ransom span:nth-child(3){background:var(--yellow);color:var(--black);transform:rotate(-3deg)}
-.member-ransom span:nth-child(4){background:var(--black);color:var(--yellow);transform:rotate(5deg)}
 
 .member-bio{
-  position:absolute;left:18px;right:18px;bottom:52px;z-index:3;
+  flex:1 1 auto;
+  order:1;
+  position:relative;z-index:3;
+  padding: 54px 14px 48px 22px;
+  display:flex;align-items:center;
   color:var(--off-white);
-  opacity:0;transform:translateY(14px);
-  transition:opacity .3s .32s, transform .35s .32s;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .3s .2s, transform .35s .2s;
 }
 .member-card:hover .member-bio{opacity:1;transform:translateY(0)}
 .member-bio .txt{
-  font-size:13px;line-height:1.75;
-  color:rgba(255,255,255,.92);
+  font-size:13px;line-height:1.9;
+  color:var(--off-white);
   max-width:none;
+  letter-spacing:.02em;
 }
 
 .member-topband,.member-botband{
@@ -2264,7 +2257,6 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
       <div class="member-reveal">
         <div class="member-photo" data-initial="T"></div>
         <div class="member-halftone"></div>
-        <div class="member-ransom"><span>TAKE</span><span>YOUR</span><span>HEART</span></div>
         <div class="member-bio">
           <div class="txt">構造の緻密さと演出のキレ。頭脳派の視点で物語を組み上げる。</div>
         </div>
@@ -2280,7 +2272,6 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
       <div class="member-reveal">
         <div class="member-photo" data-initial="J"></div>
         <div class="member-halftone"></div>
-        <div class="member-ransom"><span>SHOW</span><span>TIME</span><span>!!</span></div>
         <div class="member-bio">
           <div class="txt">熱量と遊び心。盤上のテンポを上げる推進役、ドラマの火花を散らす。</div>
         </div>
@@ -2296,7 +2287,6 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
       <div class="member-reveal">
         <div class="member-photo" data-initial="N"></div>
         <div class="member-halftone"></div>
-        <div class="member-ransom"><span>TRICK</span><span>AND</span><span>CHARM</span></div>
         <div class="member-bio">
           <div class="txt">やわらかな感性で、余韻の残る情景を編み上げる。情動の奥行きが魅力。</div>
         </div>
@@ -2312,7 +2302,6 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
       <div class="member-reveal">
         <div class="member-photo" data-initial="M"></div>
         <div class="member-halftone"></div>
-        <div class="member-ransom"><span>SILENT</span><span>EYES</span><span>ON</span></div>
         <div class="member-bio">
           <div class="txt">静かな視線で、物語の芯にある感情を掬い上げる。研ぎ澄まされた観察眼。</div>
         </div>
