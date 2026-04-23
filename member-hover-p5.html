@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Member Card Hover — P5 Style</title>
+<style>
+:root{
+  --red:#E60012;
+  --red-deep:#A80013;
+  --black:#0A0A0A;
+  --ink:#141414;
+  --white:#F2EAD3;
+  --yellow:#F5D547;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--black);color:var(--white);
+  font-family:'Noto Sans JP',sans-serif;
+  min-height:100vh;padding:48px 32px 120px;
+  background-image:
+    repeating-linear-gradient(45deg,rgba(230,0,18,.04) 0 2px,transparent 2px 10px),
+    radial-gradient(circle at 20% 10%,rgba(230,0,18,.08),transparent 40%);
+}
+h1{
+  font-family:'Bebas Neue',sans-serif;letter-spacing:.15em;
+  font-size:40px;color:var(--white);margin-bottom:4px;
+  text-shadow:3px 3px 0 var(--red);
+}
+.lead{color:rgba(242,234,211,.7);margin-bottom:48px;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:40px}
+.demo{display:flex;flex-direction:column;gap:10px}
+.demo-label{
+  font-family:'Bebas Neue',sans-serif;letter-spacing:.2em;color:var(--red);
+  font-size:14px;display:flex;align-items:baseline;gap:12px;
+}
+.demo-label b{color:var(--white);font-size:19px}
+.demo-desc{font-size:12px;color:rgba(242,234,211,.6);margin-top:-4px;line-height:1.5}
+.stage{
+  position:relative;height:380px;
+  background:var(--white);
+  border:3px solid var(--black);
+  box-shadow:8px 8px 0 var(--red);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.card{
+  position:relative;width:260px;height:320px;
+  background:var(--white);
+  border:3px solid var(--black);
+  padding:20px;display:flex;flex-direction:column;justify-content:flex-end;
+  cursor:pointer;
+  transition:transform .25s cubic-bezier(.3,1.5,.5,1);
+  box-shadow:4px 4px 0 var(--black);
+}
+.card:hover{transform:translate(-2px,-2px) rotate(-1deg);box-shadow:8px 8px 0 var(--red)}
+.card h3{
+  font-family:'Bebas Neue',sans-serif;letter-spacing:.08em;
+  font-size:26px;color:var(--black);margin-bottom:6px;font-weight:900;
+}
+.card p{font-size:12px;color:rgba(20,20,20,.75);line-height:1.6}
+.card .no{
+  position:absolute;top:10px;left:14px;
+  font-family:'Bebas Neue',sans-serif;font-weight:900;
+  color:var(--red);font-size:22px;letter-spacing:.1em;
+  transform:rotate(-4deg);
+}
+.card .tag{
+  position:absolute;top:10px;right:12px;
+  background:var(--black);color:var(--white);
+  font-family:'Bebas Neue',sans-serif;letter-spacing:.15em;
+  font-size:10px;padding:3px 8px;transform:rotate(4deg);
+}
+.reveal{
+  position:absolute;inset:0;overflow:hidden;
+  pointer-events:none;
+}
+.reveal .img{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1509909756405-be0199881695?w=700');
+  background-size:cover;background-position:center;
+  filter:contrast(1.3) saturate(1.2);
+}
+.reveal .img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 30%,rgba(10,10,10,.9));
+}
+.reveal .bio{
+  position:absolute;left:18px;right:18px;bottom:16px;z-index:3;color:var(--white);
+}
+.reveal .bio .tag{
+  position:static;display:inline-block;background:var(--red);color:var(--white);
+  font-family:'Bebas Neue',sans-serif;letter-spacing:.2em;font-size:10px;
+  padding:3px 10px;transform:skewX(-12deg);margin-bottom:8px;
+}
+.reveal .bio h4{
+  font-family:'Bebas Neue',sans-serif;letter-spacing:.06em;font-size:24px;
+  font-weight:900;margin-bottom:4px;
+  text-shadow:2px 2px 0 var(--red);
+}
+.reveal .bio .txt{font-size:11px;line-height:1.6;color:rgba(255,255,255,.9)}
+
+/* Halftone overlay reusable */
+.halftone{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background-image:radial-gradient(circle,var(--black) 1px,transparent 1.4px);
+  background-size:6px 6px;
+  opacity:.15;mix-blend-mode:multiply;
+}
+
+/* ============ A. ALL-OUT ATTACK SHATTER ============ */
+.a .reveal{
+  clip-path:polygon(
+    0 0,50% 0,45% 50%,55% 50%,50% 100%,0 100%,
+    0 0
+  );
+  transform:translateX(-110%);
+  transition:transform .45s cubic-bezier(.7,.05,.2,1);
+}
+.a:hover .reveal{transform:translateX(0)}
+.a .shard{
+  position:absolute;background:var(--red);
+  pointer-events:none;z-index:4;
+  transform:translateX(-200%) skewX(-20deg);
+  transition:transform .5s cubic-bezier(.7,.05,.2,1);
+}
+.a:hover .shard{transform:translateX(0) skewX(-20deg)}
+.a .s1{top:0;left:-20%;width:30%;height:100%;}
+.a .s2{top:0;left:10%;width:10%;height:100%;background:var(--black);transition-delay:.05s}
+.a .s3{top:0;left:25%;width:8%;height:100%;background:var(--white);transition-delay:.1s}
+.a .bang{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0) rotate(-15deg);
+  background:var(--red);color:var(--white);
+  font-family:'Bebas Neue',sans-serif;font-weight:900;letter-spacing:.05em;
+  font-size:42px;padding:8px 22px;z-index:5;
+  clip-path:polygon(5% 0,100% 10%,95% 100%,0 90%);
+  transition:transform .35s .25s cubic-bezier(.3,1.7,.5,1);
+  text-shadow:3px 3px 0 var(--black);
+  white-space:nowrap;
+}
+.a:hover .bang{transform:translate(-50%,-50%) scale(1) rotate(-8deg)}
+.a .card:hover > *:not(.reveal):not(.shard):not(.bang){opacity:0;transition:opacity .15s}
+
+/* ============ B. DIAGONAL SLASH CUT ============ */
+.b .reveal{
+  clip-path:polygon(-10% -10%,-10% -10%,-10% -10%,-10% -10%);
+  transition:clip-path .55s cubic-bezier(.7,.05,.2,1);
+}
+.b:hover .reveal{
+  clip-path:polygon(-10% -10%,110% -10%,110% 110%,-10% 110%);
+}
+.b .slash{
+  position:absolute;top:-20%;left:-40%;
+  width:60%;height:140%;background:var(--red);
+  transform:rotate(-18deg) translateX(-120%);
+  transition:transform .45s cubic-bezier(.7,.05,.2,1);
+  z-index:4;
+}
+.b:hover .slash{transform:rotate(-18deg) translateX(280%)}
+.b .slash2{
+  position:absolute;top:-20%;left:-40%;
+  width:12%;height:140%;background:var(--black);
+  transform:rotate(-18deg) translateX(-120%);
+  transition:transform .45s .08s cubic-bezier(.7,.05,.2,1);
+  z-index:4;
+}
+.b:hover .slash2{transform:rotate(-18deg) translateX(320%)}
+.b .card:hover > *:not(.reveal):not(.slash):not(.slash2){opacity:0;transition:opacity .2s .1s}
+
+/* ============ C. COMIC STAMP BURST ============ */
+.c .reveal{
+  opacity:0;transform:scale(.4) rotate(-8deg);
+  transition:opacity .3s,transform .45s cubic-bezier(.3,1.6,.5,1);
+  transform-origin:20% 20%;
+}
+.c:hover .reveal{opacity:1;transform:scale(1) rotate(0)}
+.c .burst{
+  position:absolute;top:-30px;left:-30px;width:140%;height:140%;
+  background:
+    conic-gradient(from 0deg,
+      var(--red) 0deg 15deg,transparent 15deg 30deg,
+      var(--red) 30deg 45deg,transparent 45deg 60deg,
+      var(--red) 60deg 75deg,transparent 75deg 90deg,
+      var(--red) 90deg 105deg,transparent 105deg 120deg,
+      var(--red) 120deg 135deg,transparent 135deg 150deg,
+      var(--red) 150deg 165deg,transparent 165deg 180deg,
+      var(--red) 180deg 195deg,transparent 195deg 210deg,
+      var(--red) 210deg 225deg,transparent 225deg 240deg,
+      var(--red) 240deg 255deg,transparent 255deg 270deg,
+      var(--red) 270deg 285deg,transparent 285deg 300deg,
+      var(--red) 300deg 315deg,transparent 315deg 330deg,
+      var(--red) 330deg 345deg,transparent 345deg 360deg);
+  opacity:0;transform:scale(0) rotate(0);z-index:0;
+  transition:opacity .35s,transform .5s cubic-bezier(.3,1.4,.5,1);
+  filter:blur(.3px);
+}
+.c:hover .burst{opacity:.85;transform:scale(1) rotate(90deg)}
+.c .bang{
+  position:absolute;top:30px;right:18px;z-index:5;
+  background:var(--yellow);color:var(--black);
+  font-family:'Bebas Neue',sans-serif;font-weight:900;letter-spacing:.05em;
+  font-size:22px;padding:6px 14px;
+  clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);
+  transform:scale(0) rotate(20deg);
+  transition:transform .3s .2s cubic-bezier(.3,1.8,.5,1);
+  border:2px solid var(--black);
+}
+.c:hover .bang{transform:scale(1) rotate(8deg)}
+.c .card:hover > *:not(.reveal):not(.burst):not(.bang){opacity:0;transition:opacity .2s}
+
+/* ============ D. STENCIL TYPE REVEAL ============ */
+.d .reveal{
+  opacity:1;
+  clip-path:polygon(0 0,0 0,0 100%,0 100%);
+  transition:clip-path .45s cubic-bezier(.6,.05,.2,1);
+}
+.d:hover .reveal{clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.d .stencil{
+  position:absolute;inset:0;z-index:5;pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.d .stencil span{
+  font-family:'Bebas Neue',sans-serif;font-weight:900;
+  font-size:140px;letter-spacing:-.04em;line-height:.85;
+  color:var(--red);opacity:0;
+  transform:translateX(-40px) skewX(-8deg);
+  transition:opacity .3s .2s,transform .4s .2s cubic-bezier(.3,1.3,.5,1);
+  -webkit-text-stroke:2px var(--black);
+  text-shadow:4px 4px 0 var(--black);
+  mix-blend-mode:normal;
+}
+.d:hover .stencil span{opacity:1;transform:translateX(0) skewX(-8deg)}
+.d .card:hover > *:not(.reveal):not(.stencil){opacity:0;transition:opacity .2s}
+
+/* ============ E. RANSOM POLAROID SLAP ============ */
+.e .reveal{
+  opacity:0;
+  transform:translate(-30%,-30%) rotate(-20deg) scale(.5);
+  transition:opacity .2s,transform .4s cubic-bezier(.3,1.7,.5,1);
+  border:6px solid var(--white);
+  box-shadow:6px 6px 0 var(--black),10px 10px 0 var(--red);
+}
+.e:hover .reveal{opacity:1;transform:translate(0,0) rotate(-3deg) scale(1)}
+.e .ransom{
+  position:absolute;top:12px;left:12px;right:12px;z-index:5;
+  display:flex;flex-wrap:wrap;gap:2px;
+  opacity:0;transform:translateY(-20px);
+  transition:opacity .25s .3s,transform .3s .3s;
+}
+.e:hover .ransom{opacity:1;transform:translateY(0)}
+.e .ransom span{
+  display:inline-block;padding:2px 6px;
+  font-family:'Bebas Neue',sans-serif;font-weight:900;
+  font-size:18px;line-height:1;
+}
+.e .ransom span:nth-child(1){background:var(--red);color:var(--white);transform:rotate(-4deg)}
+.e .ransom span:nth-child(2){background:var(--white);color:var(--black);transform:rotate(3deg)}
+.e .ransom span:nth-child(3){background:var(--black);color:var(--white);transform:rotate(-2deg)}
+.e .ransom span:nth-child(4){background:var(--yellow);color:var(--black);transform:rotate(5deg)}
+.e .card:hover > h3,.e .card:hover > p,.e .card:hover > .no,.e .card:hover > .tag{opacity:0;transition:opacity .2s}
+
+/* ============ F. TAKE YOUR HEART (dual slide + mask) ============ */
+.f{position:relative}
+.f .reveal{
+  clip-path:polygon(0 0,100% 0,100% 100%,0 100%);
+  opacity:1;
+  transform:translateY(100%);
+  transition:transform .5s cubic-bezier(.7,.05,.2,1);
+}
+.f:hover .reveal{transform:translateY(0)}
+.f .topband{
+  position:absolute;top:0;left:0;right:0;height:28px;
+  background:var(--red);z-index:4;
+  transform:translateY(-100%) skewY(-2deg);
+  transition:transform .3s cubic-bezier(.7,.05,.2,1);
+  display:flex;align-items:center;padding:0 14px;
+  font-family:'Bebas Neue',sans-serif;letter-spacing:.25em;
+  color:var(--white);font-size:12px;font-weight:900;
+}
+.f:hover .topband{transform:translateY(0) skewY(-2deg)}
+.f .botband{
+  position:absolute;bottom:0;left:0;right:0;height:28px;
+  background:var(--black);z-index:4;
+  transform:translateY(100%) skewY(-2deg);
+  transition:transform .3s .05s cubic-bezier(.7,.05,.2,1);
+  display:flex;align-items:center;justify-content:flex-end;padding:0 14px;
+  font-family:'Bebas Neue',sans-serif;letter-spacing:.25em;
+  color:var(--red);font-size:12px;font-weight:900;
+}
+.f:hover .botband{transform:translateY(0) skewY(-2deg)}
+.f .card:hover > *:not(.reveal):not(.topband):not(.botband){opacity:0;transition:opacity .2s}
+
+</style>
+</head>
+<body>
+
+<h1>P5-STYLE / MEMBER HOVER</h1>
+<p class="lead">ペルソナ５的な赤黒白・炸裂・斜め裁断スタイル。マウスを乗せて確認してください。</p>
+
+<div class="grid">
+
+  <!-- A -->
+  <div class="demo a">
+    <div class="demo-label">A <b>ALL-OUT ATTACK</b></div>
+    <div class="demo-desc">赤い破片が斜めに突き刺さり、ギザギザカットで画像が登場。中央に「GOTCHA!」風スタンプ</div>
+    <div class="stage">
+      <div class="card">
+        <span class="no">01</span><span class="tag">TECK</span>
+        <h3>てっく</h3>
+        <p>緻密な仕掛けの向こうで、物語の輪郭を研ぎ澄ます。</p>
+        <div class="shard s1"></div><div class="shard s2"></div><div class="shard s3"></div>
+        <div class="reveal">
+          <div class="img"></div><div class="halftone"></div>
+          <div class="bio">
+            <span class="tag">MEMBER 01</span>
+            <h4>TECK</h4>
+            <div class="txt">構造の緻密さと演出のキレ。頭脳派の視点で物語を組む。</div>
+          </div>
+        </div>
+        <div class="bang">SHOWTIME!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="demo b">
+    <div class="demo-label">B <b>DIAGONAL SLASH</b></div>
+    <div class="demo-desc">斜め赤ブレードが画面を切り裂きながら通過。切り口から画像が露出</div>
+    <div class="stage">
+      <div class="card">
+        <span class="no">02</span><span class="tag">JIN</span>
+        <h3>ジンソツ</h3>
+        <p>熱量と遊び心で、盤上にドラマの火花を散らす。</p>
+        <div class="slash"></div><div class="slash2"></div>
+        <div class="reveal">
+          <div class="img"></div><div class="halftone"></div>
+          <div class="bio">
+            <span class="tag">MEMBER 02</span>
+            <h4>JINSOTSU</h4>
+            <div class="txt">熱量と遊び心。場の温度を上げる推進力。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="demo c">
+    <div class="demo-label">C <b>COMIC BURST STAMP</b></div>
+    <div class="demo-desc">放射状の集中線が回転しながら出現、ポップが捺印されるように登場</div>
+    <div class="stage">
+      <div class="card">
+        <div class="burst"></div>
+        <span class="no">03</span><span class="tag">NAM</span>
+        <h3>なみそたん</h3>
+        <p>やわらかな感性で、余韻の残る情景を編み上げる。</p>
+        <div class="reveal">
+          <div class="img"></div><div class="halftone"></div>
+          <div class="bio">
+            <span class="tag">MEMBER 03</span>
+            <h4>NAMISO</h4>
+            <div class="txt">余韻と情感。静かに確かな筆致で情景を立ち上げる。</div>
+          </div>
+        </div>
+        <div class="bang">POP!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D -->
+  <div class="demo d">
+    <div class="demo-label">D <b>STENCIL TYPE</b></div>
+    <div class="demo-desc">左→右に展開、巨大なステンシル文字が背後から突き抜けるタイポ爆撃</div>
+    <div class="stage">
+      <div class="card">
+        <span class="no">04</span><span class="tag">MIYA</span>
+        <h3>宮</h3>
+        <p>静かな視線で、物語の芯にある感情を掬い上げる。</p>
+        <div class="reveal">
+          <div class="img"></div><div class="halftone"></div>
+          <div class="bio">
+            <span class="tag">MEMBER 04</span>
+            <h4>MIYA</h4>
+            <div class="txt">静けさの奥の情動。核に迫る研ぎ澄まされた眼差し。</div>
+          </div>
+        </div>
+        <div class="stencil"><span>04</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E -->
+  <div class="demo e">
+    <div class="demo-label">E <b>RANSOM SLAP</b></div>
+    <div class="demo-desc">ポラロイドが斜めに叩きつけられ、脅迫状風の文字タグが上から舞い降りる</div>
+    <div class="stage">
+      <div class="card">
+        <span class="no">05</span><span class="tag">SMPL</span>
+        <h3>サンプル</h3>
+        <p>ポラロイド＋ランサムノート風の切り替え。</p>
+        <div class="reveal">
+          <div class="img"></div><div class="halftone"></div>
+          <div class="bio">
+            <span class="tag">MEMBER XX</span>
+            <h4>SAMPLE</h4>
+            <div class="txt">叩きつけられるポラロイドと脅迫状。</div>
+          </div>
+        </div>
+        <div class="ransom"><span>TAKE</span><span>YOUR</span><span>HEART</span><span>!</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- F -->
+  <div class="demo f">
+    <div class="demo-label">F <b>TAKE YOUR HEART BAND</b></div>
+    <div class="demo-desc">画像は下からスライドイン、上下から赤・黒の斜めバンドがタイトル付きで挟み込む</div>
+    <div class="stage">
+      <div class="card">
+        <span class="no">06</span><span class="tag">SMPL</span>
+        <h3>サンプル</h3>
+        <p>上下バンドで挟むP5予告状スタイル。</p>
+        <div class="reveal">
+          <div class="img"></div><div class="halftone"></div>
+          <div class="bio">
+            <span class="tag">MEMBER XX</span>
+            <h4>SAMPLE</h4>
+            <div class="txt">予告状ルックで情報を挟み込む。</div>
+          </div>
+        </div>
+        <div class="topband">TAKE YOUR HEART</div>
+        <div class="botband">— STUDIO ARTS</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p style="margin-top:60px;color:rgba(242,234,211,.5);font-size:12px">
+  番号 or 組み合わせを指定してください。例：「A単体」「A＋F」「Bの切り裂き＋Cの集中線」など。
+</p>
+
+</body>
+</html>
