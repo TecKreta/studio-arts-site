@@ -1871,15 +1871,26 @@ ul, ol { list-style: none; }
 .work-img img { transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.2, 1), filter 0.5s; }
 
 /* Member card hover */
-.member-card { transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.2, 1), box-shadow 0.4s; }
+.member-card {
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.2, 1),
+              box-shadow 0.4s,
+              clip-path 0.35s cubic-bezier(0.2, 0.9, 0.2, 1),
+              border-color 0.3s;
+}
+.member-card::before,
+.member-card::after { transition: opacity 0.3s; }
 .member-card:hover {
   transform: translateY(-4px) rotate(var(--rot, 0)) scale(1.015);
   box-shadow: 16px 16px 0 rgba(201, 176, 55, 0.35);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  border-color: transparent;
 }
+.member-card:hover::before,
+.member-card:hover::after { opacity: 0; }
 
 /* ===== Member hover reveal — Split layout (bio L / photo R) + P5 bands ===== */
 .member-reveal{
-  position:absolute;inset:0;z-index:2;pointer-events:none;
+  position:absolute;inset:-3px;z-index:5;pointer-events:none;
   opacity:0;
   transform:translateX(-4%);
   transition:opacity .35s ease, transform .5s cubic-bezier(.3,1.2,.5,1), clip-path .5s cubic-bezier(.7,.05,.2,1);
@@ -1944,7 +1955,7 @@ ul, ol { list-style: none; }
 }
 
 .member-topband,.member-botband{
-  position:absolute;left:0;right:0;height:34px;z-index:4;
+  position:absolute;left:-3px;right:-3px;height:36px;z-index:7;
   display:flex;align-items:center;
   font-family:var(--font-display);letter-spacing:.3em;font-weight:900;
   font-size:13px;
@@ -1952,16 +1963,17 @@ ul, ol { list-style: none; }
   pointer-events:none;
 }
 .member-topband{
-  top:0;padding:0 20px;
+  top:-3px;padding:0 20px;
   background:var(--red);color:var(--off-white);
-  transform:translateY(-110%) skewY(-2deg);
+  transform:translateY(-120%) skewY(-2deg);
   justify-content:flex-start;
   text-shadow:2px 2px 0 var(--black-soft);
+  box-shadow:0 4px 0 var(--black-soft);
 }
 .member-botband{
-  bottom:0;padding:0 28px 0 20px;
+  bottom:-3px;padding:0 28px 0 20px;
   background:var(--black);color:var(--yellow);
-  transform:translateY(110%) skewY(-2deg);
+  transform:translateY(120%) skewY(-2deg);
   justify-content:space-between;
   border-top:2px solid var(--red);
 }
