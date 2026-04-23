@@ -1877,6 +1877,116 @@ ul, ol { list-style: none; }
   box-shadow: 16px 16px 0 rgba(201, 176, 55, 0.35);
 }
 
+/* ===== Member hover reveal — Polaroid Slap + Top/Bot Band (P5) ===== */
+.member-reveal{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  opacity:0;
+  transform:translate(-14%,-16%) rotate(-14deg) scale(.5);
+  transition:opacity .25s ease, transform .5s cubic-bezier(.3,1.55,.5,1);
+  border:10px solid var(--off-white);
+  box-shadow: 6px 6px 0 var(--black-soft), 12px 12px 0 var(--red);
+  overflow:hidden;
+  background:var(--black);
+}
+.member-card:hover .member-reveal{
+  opacity:1;
+  transform:translate(0,0) rotate(-2deg) scale(1);
+}
+.member-photo{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  background-color:var(--red-dark);
+  filter:contrast(1.15) saturate(1.1);
+}
+.member-photo::before{
+  content:attr(data-initial);
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:900;
+  font-size:180px;letter-spacing:-.04em;line-height:1;
+  color:var(--off-white);opacity:.18;
+  text-shadow: 6px 6px 0 var(--black);
+}
+.member-photo::after{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,transparent 35%,rgba(0,0,0,.85)),
+    linear-gradient(135deg, var(--red-glow) 0%, transparent 60%);
+  mix-blend-mode:multiply;
+}
+.member-halftone{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background-image:radial-gradient(circle, var(--black) 1px, transparent 1.4px);
+  background-size:6px 6px;
+  opacity:.22;mix-blend-mode:multiply;
+}
+.member-ransom{
+  position:absolute;top:54px;left:14px;right:14px;z-index:3;
+  display:flex;flex-wrap:wrap;gap:4px;
+  opacity:0;transform:translateY(-18px);
+  transition:opacity .25s .28s, transform .3s .28s;
+}
+.member-card:hover .member-ransom{opacity:1;transform:translateY(0)}
+.member-ransom span{
+  display:inline-block;padding:3px 9px;
+  font-family:var(--font-display);font-weight:900;
+  font-size:15px;line-height:1;letter-spacing:.1em;
+}
+.member-ransom span:nth-child(1){background:var(--red);color:var(--off-white);transform:rotate(-5deg)}
+.member-ransom span:nth-child(2){background:var(--off-white);color:var(--black);transform:rotate(4deg)}
+.member-ransom span:nth-child(3){background:var(--yellow);color:var(--black);transform:rotate(-3deg)}
+.member-ransom span:nth-child(4){background:var(--black);color:var(--yellow);transform:rotate(5deg)}
+
+.member-bio{
+  position:absolute;left:18px;right:18px;bottom:52px;z-index:3;
+  color:var(--off-white);
+  opacity:0;transform:translateY(14px);
+  transition:opacity .3s .32s, transform .35s .32s;
+}
+.member-card:hover .member-bio{opacity:1;transform:translateY(0)}
+.member-bio .txt{
+  font-size:13px;line-height:1.75;
+  color:rgba(255,255,255,.92);
+  max-width:none;
+}
+
+.member-topband,.member-botband{
+  position:absolute;left:0;right:0;height:34px;z-index:4;
+  display:flex;align-items:center;
+  font-family:var(--font-display);letter-spacing:.3em;font-weight:900;
+  font-size:13px;
+  transition:transform .38s cubic-bezier(.7,.05,.2,1);
+  pointer-events:none;
+}
+.member-topband{
+  top:0;padding:0 20px;
+  background:var(--red);color:var(--off-white);
+  transform:translateY(-110%) skewY(-2deg);
+  justify-content:flex-start;
+  text-shadow:2px 2px 0 var(--black-soft);
+}
+.member-botband{
+  bottom:0;padding:0 28px 0 20px;
+  background:var(--black);color:var(--yellow);
+  transform:translateY(110%) skewY(-2deg);
+  justify-content:space-between;
+  border-top:2px solid var(--red);
+}
+.member-botband .jp{font-family:var(--font-sans);letter-spacing:.18em;font-size:13px;color:var(--off-white)}
+.member-botband .en{color:var(--yellow)}
+.member-card:hover .member-topband{transform:translateY(0) skewY(-2deg)}
+.member-card:hover .member-botband{transform:translateY(0) skewY(-2deg);transition-delay:.06s}
+
+/* Hide base content on hover */
+.member-card > h3,
+.member-card > p { transition: opacity .2s; position:relative; z-index:1; }
+.member-card:hover > h3,
+.member-card:hover > p { opacity:0; }
+
+@media (prefers-reduced-motion: reduce){
+  .member-reveal,.member-topband,.member-botband,.member-ransom,.member-bio{transition:none!important}
+}
+
 /* Nav hover glow */
 .nav-list a:hover { color: var(--yellow); text-shadow: 0 0 8px rgba(201, 176, 55, 0.5); }
 
@@ -2151,24 +2261,64 @@ html.cursor-down .cursor-dot   { width: 12px; height: 12px; }
       <span class="member-no">01</span>
       <h3>てっく</h3>
       <p>緻密な仕掛けの向こうで、物語の輪郭を研ぎ澄ます。</p>
+      <div class="member-reveal">
+        <div class="member-photo" data-initial="T"></div>
+        <div class="member-halftone"></div>
+        <div class="member-ransom"><span>TAKE</span><span>YOUR</span><span>HEART</span></div>
+        <div class="member-bio">
+          <div class="txt">構造の緻密さと演出のキレ。頭脳派の視点で物語を組み上げる。</div>
+        </div>
+      </div>
+      <div class="member-topband">PROFILE / 01</div>
+      <div class="member-botband"><span class="jp">てっく</span><span class="en">TECK</span></div>
     </article>
 
     <article class="member-card" style="--rot:1.1deg">
       <span class="member-no">02</span>
       <h3>ジンソツ</h3>
       <p>熱量と遊び心で、盤上にドラマの火花を散らす。</p>
+      <div class="member-reveal">
+        <div class="member-photo" data-initial="J"></div>
+        <div class="member-halftone"></div>
+        <div class="member-ransom"><span>SHOW</span><span>TIME</span><span>!!</span></div>
+        <div class="member-bio">
+          <div class="txt">熱量と遊び心。盤上のテンポを上げる推進役、ドラマの火花を散らす。</div>
+        </div>
+      </div>
+      <div class="member-topband">PROFILE / 02</div>
+      <div class="member-botband"><span class="jp">ジンソツ</span><span class="en">JINSOTSU</span></div>
     </article>
 
     <article class="member-card" style="--rot:-0.8deg">
       <span class="member-no">03</span>
       <h3>なみそたん</h3>
       <p>やわらかな感性で、余韻の残る情景を編み上げる。</p>
+      <div class="member-reveal">
+        <div class="member-photo" data-initial="N"></div>
+        <div class="member-halftone"></div>
+        <div class="member-ransom"><span>TRICK</span><span>AND</span><span>CHARM</span></div>
+        <div class="member-bio">
+          <div class="txt">やわらかな感性で、余韻の残る情景を編み上げる。情動の奥行きが魅力。</div>
+        </div>
+      </div>
+      <div class="member-topband">PROFILE / 03</div>
+      <div class="member-botband"><span class="jp">なみそたん</span><span class="en">NAMISOTAN</span></div>
     </article>
 
     <article class="member-card" style="--rot:1deg">
       <span class="member-no">04</span>
       <h3>宮</h3>
       <p>静かな視線で、物語の芯にある感情を掬い上げる。</p>
+      <div class="member-reveal">
+        <div class="member-photo" data-initial="M"></div>
+        <div class="member-halftone"></div>
+        <div class="member-ransom"><span>SILENT</span><span>EYES</span><span>ON</span></div>
+        <div class="member-bio">
+          <div class="txt">静かな視線で、物語の芯にある感情を掬い上げる。研ぎ澄まされた観察眼。</div>
+        </div>
+      </div>
+      <div class="member-topband">PROFILE / 04</div>
+      <div class="member-botband"><span class="jp">宮</span><span class="en">MIYA</span></div>
     </article>
   </div>
 
