@@ -1884,7 +1884,7 @@ ul, ol { list-style: none; }
   z-index: 10;
 }
 
-/* ===== Member hover flyer — Slap-on sticker over the base card ===== */
+/* ===== Member hover flyer — Slap-on sticker with lagging shadow cards ===== */
 .member-reveal{
   position:absolute;
   inset:-12px;
@@ -1892,19 +1892,27 @@ ul, ol { list-style: none; }
   opacity:0;
   transform:translate(0,0) rotate(0deg) scale(.72);
   transform-origin:50% 50%;
-  transition:opacity .3s ease, transform .5s cubic-bezier(.3,1.45,.5,1);
   overflow:hidden;
   background:linear-gradient(135deg, var(--black) 0%, var(--black-soft) 100%);
   border:3px solid var(--black);
+  /* Baseline: shadows stacked directly behind (no offset = invisible) */
+  box-shadow:
+    0 0 0 var(--red),
+    0 0 0 var(--black-soft),
+    0 0 0 rgba(0,0,0,0);
+  transition:
+    opacity .3s ease,
+    transform .5s cubic-bezier(.3,1.45,.5,1),
+    box-shadow .55s cubic-bezier(.3,1.35,.4,1) .18s;
+}
+/* Per-card tilt variation (alternating mirror), shadows slide out of position after flyer lands */
+.member-card:nth-child(odd):hover .member-reveal{
+  opacity:1;
+  transform:translate(-6px,-6px) rotate(-2.5deg) scale(1);
   box-shadow:
     12px 12px 0 var(--red),
     22px 22px 0 var(--black-soft),
     28px 28px 32px rgba(0,0,0,.5);
-}
-/* Per-card tilt variation (alternating mirror) */
-.member-card:nth-child(odd):hover .member-reveal{
-  opacity:1;
-  transform:translate(-6px,-6px) rotate(-2.5deg) scale(1);
 }
 .member-card:nth-child(even):hover .member-reveal{
   opacity:1;
